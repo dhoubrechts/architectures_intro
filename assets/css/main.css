@@ -1,0 +1,26 @@
+:root {
+  --theme-color: #0078d4;
+}
+
+.sidebar-nav > ul > li > p {
+  font-weight: 700;
+  margin-top: 1rem;
+}
+
+.markdown-section code,
+.markdown-section pre {
+  font-family: "Cascadia Code", Consolas, monospace;
+}
+
+.markdown-section table {
+  display: table;
+  width: 100%;
+}
+
+.markdown-section img {
+  max-width: 100%;
+}
+
+.markdown-section blockquote {
+  border-left-color: var(--theme-color);
+}

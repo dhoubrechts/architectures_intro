@@ -1,0 +1,37 @@
+- [Course home](README.md)
+- [Roadmap and study method](course/00-course-roadmap.md)
+- [Student portal case](case-study/student-portal.md)
+
+- **Course**
+  - [Foundation From idea to implementation](course/00-from-idea-to-implementation.md)
+  - [1 Systems thinking](course/01-systems-thinking.md)
+  - [2 Networks and communication](course/02-networks-and-communication.md)
+  - [3 Applications APIs and data](course/03-applications-apis-and-data.md)
+  - [4 Infrastructure cloud and delivery](course/04-infrastructure-cloud-and-delivery.md)
+  - [5 Identity and security](course/05-identity-and-security.md)
+  - [6 Reliability and observability](course/06-reliability-and-observability.md)
+  - [7 Views and decisions](course/07-views-and-decisions.md)
+  - [8 Capstone and AI review](course/08-capstone-and-ai-review.md)
+  - [Glossary](course/09-glossary.md)
+  - [Implementation journey](course/10-implementation-journey.md)
+  - [Containers local to cloud](course/11-containers-local-to-cloud.md)
+
+- **Hands-on**
+  - [Overview](hands-on/00-overview.md)
+  - [Foundation Shape a secure delivery plan](hands-on/00-from-idea-to-implementation.md)
+  - [1 Map the system](hands-on/01-map-the-system.md)
+  - [2 Trace a web request](hands-on/02-trace-a-web-request.md)
+  - [3 Model an application flow](hands-on/03-model-an-application-flow.md)
+  - [4 Compare deployment options](hands-on/04-compare-deployment-options.md)
+  - [5 Threat-model the portal](hands-on/05-threat-model-the-portal.md)
+  - [6 Diagnose an incident](hands-on/06-diagnose-an-incident.md)
+  - [7 Create views and an ADR](hands-on/07-create-views-and-an-adr.md)
+  - [8 Capstone](hands-on/08-capstone.md)
+
+- **Assessment and references**
+  - [Working end project](project/README.md)
+  - [Cloud deployment requirements](project/cloud-deployment-requirements.md)
+  - [End project rubric](project/rubric.md)
+  - [Questions and rubric](evaluation/questions-and-rubric.md)
+  - [Reference solution index](hands-on/solutions/README.md)
+  - [Sources and further study](references/00-sources.md)
