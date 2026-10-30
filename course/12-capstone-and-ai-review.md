@@ -1,4 +1,4 @@
-# Module 8 — Capstone and critical AI review
+# Final module — Capstone and critical AI review
 
 **Estimated study time:** 60 minutes plus the capstone project
 
@@ -14,8 +14,9 @@ After this module, you can:
 
 ## Prerequisites
 
-Complete Modules 1 through 7 and their labs. Review the complete
-[student portal case](../case-study/student-portal.md).
+Complete the foundation, Modules 1 through 7, the implementation journey,
+Docker-to-cloud module, and Labs 1 through 8. Review the complete
+[workplace learning case](../case-study/workplace-learning-platform.md).
 
 ## Integration before optimisation
 
@@ -42,8 +43,8 @@ Create a lightweight traceability table:
 
 | Requirement | Design response | Verification evidence | Remaining risk |
 | --- | --- | --- | --- |
-| Students see only their own results | Subject-to-resource authorization in API | Cross-account access tests and audit events | Incorrect enrolment source data |
-| Upload peaks do not overload API memory | Direct object-storage upload with bounded size | Peak test, storage metrics, expired-link test | Storage-provider outage |
+| Users see only assigned dossiers and permitted actions | Role, assignment, object, and state authorization in API | Cross-dossier and unassigned-mentor tests with audit events | Incorrect assignment source data |
+| Document peaks do not overload API memory | Direct object-storage upload with bounded size and scan workflow | Peak test, storage metrics, expired-link test | Storage or scan-provider outage |
 | Small team operates the service | Managed runtime and database | Recovery exercise and on-call review | Provider-specific expertise |
 
 Traceability exposes components with no justification and requirements with no
@@ -60,7 +61,7 @@ design response.
 ### Security and privacy review
 
 - Where does identity enter, change, or become a service identity?
-- Is object-level authorization enforced for results and submissions?
+- Is role, dossier-assignment, object, and state authorization enforced for logbooks, documents, reviews, and assessments?
 - Which data appears in URLs, logs, caches, backups, and non-production?
 - Which controls are preventive, detective, and corrective?
 
@@ -125,7 +126,7 @@ Prepare a ten-minute explanation:
 
 1. problem, scope, assumptions, and top quality drivers;
 2. context and main containers;
-3. login, result-viewing, and upload flows;
+3. login, dossier viewing, logbook approval, and document review flows;
 4. security boundaries and controls;
 5. deployment, scaling, recovery, and observability;
 6. three trade-offs and the most important ADR; and
@@ -154,5 +155,5 @@ finished.
 - AI expands the option space but cannot own requirements, evidence, or accountability.
 - The final test is whether you can defend every important choice and uncertainty.
 
-Complete [Lab 8 — Capstone](../hands-on/08-capstone.md) and use the
+Complete [Lab 9 — Capstone](../hands-on/09-capstone.md) and use the
 [assessment rubric](../evaluation/questions-and-rubric.md).

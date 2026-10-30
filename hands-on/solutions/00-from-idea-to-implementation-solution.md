@@ -2,46 +2,68 @@
 
 ## Example problem and outcomes
 
-**Problem.** Students and lecturers use disconnected systems for academic
-results. Access rules and support evidence are inconsistent, and publication
-peaks are difficult to diagnose. Northstar needs one controlled result-viewing
-flow that uses institutional identity and can be operated by its small IT team.
+**Problem.** Students, academic supervisors, workplace mentors, and coordinators
+use disconnected email, spreadsheets, folders, and forms. Access rules,
+progress status, and support evidence are inconsistent. Northstar needs one
+controlled workplace-learning flow that can be operated by its small IT team.
 
 Example outcomes:
 
-- at least 95% of pilot students complete result viewing without support;
-- automated tests show that cross-student result access is denied in every API path; and
+- at least 95% of pilot students can find their next required internship action without support;
+- automated tests show that cross-dossier and unassigned-mentor access is denied in every API path; and
 - the service team can identify a failed dependency from telemetry within an agreed exercise target.
 
-The first release includes sign-in, personal result viewing, denial evidence,
-and support telemetry. Assignment upload and administrative correction are out
-of scope for the first increment.
+The first release includes sign-in, personal dossier viewing, one logbook
+submission and mentor-review flow, denial evidence, and support telemetry.
+Advanced matching and final assessment are out of scope for the first increment.
 
 ## Example epic and backlog slice
 
 | ID | Story or enabling item | Dependency | Main risk |
 | --- | --- | --- | --- |
 | EN-01 | Integrate the non-production institutional identity tenant | Identity team test client | Incorrect token validation |
-| US-01 | As a student, I can view my fictional results | EN-01, seeded database | Object-level authorization gap |
-| SEC-01 | Deny and test access to another student's result | US-01 | Incomplete endpoint coverage |
-| OPS-01 | Correlate a result request across API logs and metrics | Logging platform | Sensitive values in telemetry |
-| PERF-01 | Test agreed peak result reads | Stable Test environment | Unrealistic workload model |
+| US-01 | As a student, I can view my fictional internship dossier and next action | EN-01, seeded database | Dossier authorization gap |
+| US-02 | As a workplace mentor, I can review an assigned student's logbook | US-01, active assignment | Stale mentor assignment |
+| SEC-01 | Deny and test access to an unassigned dossier | US-01 | Incomplete endpoint coverage |
+| OPS-01 | Correlate a dossier request across API logs and metrics | Logging platform | Sensitive values in telemetry |
+| PERF-01 | Test agreed deadline-peak dashboard reads | Stable Test environment | Unrealistic workload model |
 | SUP-01 | Return a safe support code on failure | OPS-01 | Support code not searchable |
+
+## Example student wireframe
+
+```text
++--------------------------------------------------------------+
+| Workplace Learning Hub                   Student | Sign out  |
++--------------------------------------------------------------+
+| Placement: Example Lab     Phase: Active       Progress 42%  |
+| Academic supervisor: A. Example  Mentor: W. Example          |
++--------------------------------------------------------------+
+| Next actions                                                 |
+| [Submit week 4 logbook]     Due Friday                       |
+| [Upload progress document]  Not started                      |
++--------------------------------------------------------------+
+| Recent feedback: Week 3 logbook approved                     |
++--------------------------------------------------------------+
+```
+
+The student wireframe implies a dossier-summary read, logbook write, document
+workflow, and authorization based on the signed-in student's dossier. Mentor and
+academic-supervisor versions must show only assigned dossiers and permitted actions.
 
 ## Example security acceptance criteria
 
 ```gherkin
-Given student A has a valid session
-And result 124 belongs to student B
-When student A requests result 124
-Then the API returns no result data
+Given workplace mentor A has a valid session
+And dossier 124 is assigned to workplace mentor B
+When workplace mentor A requests dossier 124
+Then the API returns no dossier data
 And records a denial event with a correlation identifier
-And does not log the result content or access token
+And does not log dossier content or the access token
 ```
 
 ```gherkin
 Given the database is unavailable
-When an authenticated student requests their results
+When an authenticated student requests their internship dossier
 Then the API returns a generic service error
 And the response contains a support correlation identifier
 And no stack trace or connection string is returned
@@ -51,7 +73,7 @@ And no stack trace or connection string is returned
 
 | Threat | Prevent | Detect | Recover | Verify |
 | --- | --- | --- | --- | --- |
-| ID manipulation | Derive subject from validated identity and authorize the resource | Denial metric and audit event | Review session and affected routes | Cross-account integration tests |
+| ID manipulation | Derive subject from validated identity and authorize role, assignment, resource, and state | Denial metric and audit event | Review session and affected routes | Cross-dossier and unassigned-mentor tests |
 | Token theft | Protected transport, safe token storage, short lifetime | Suspicious session and auth events | Revoke session or client credentials | Browser and log review |
 | Query flood | Rate and concurrency limits; efficient query | Request, latency, and pool metrics | Reduce traffic or disable expensive feature | Controlled load test |
 | Log disclosure | Structured allow-list logging and redaction | Log-content test and access audit | Remove access and purge according to policy | Automated token-pattern test |
@@ -70,9 +92,9 @@ settings, feature flags, and secret references vary by environment.
 
 ## Example first increment
 
-Implement sign-in and one `GET /api/me/results` path with seeded fictional data.
-Exclude lecturer write, upload, and notifications. The riskiest assumption is
-that the identity subject maps reliably to the student record. Evidence includes
-token-validation tests, cross-account tests, a small load test, and a correlated
-failure response. Stop promotion if authorization tests fail or protected data
-appears in logs.
+Implement sign-in and one `GET /api/me/dossier` path with seeded fictional data,
+then a thin logbook submission. Exclude document review, matching, and final
+assessment. The riskiest assumption is that identity and current role assignment
+map reliably to the dossier. Evidence includes token validation, cross-dossier
+and unassigned-mentor tests, a small load test, and a correlated failure response.
+Stop promotion if authorization tests fail or protected data appears in logs.

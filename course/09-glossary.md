@@ -15,6 +15,10 @@
 | C4 model | A hierarchical approach to software architecture diagrams: context, containers, components, and code. |
 | Constraint | A condition that limits the acceptable solution space. |
 | Container | In C4, a runnable or deployable application or data store; not necessarily a container image. |
+| Docker container | A running instance of a Docker image with isolated processes, filesystem layers, networking, and configured resources. |
+| Docker image | An immutable packaged filesystem and metadata used to create containers. |
+| Docker Compose | A declarative way to run a multi-container Docker application locally or in a compatible environment. |
+| Internship dossier | The case record connecting a student, placement, organisation, supervisors, phases, activities, documents, and reviews. |
 | Correlation ID | An identifier used to connect related telemetry across a request or job. |
 | Defence in depth | Multiple controls with complementary preventive, detective, containment, or recovery purposes. |
 | Dependency | A component or service whose behaviour another part relies on. |
@@ -25,6 +29,7 @@
 | Least privilege | Granting only the permissions needed for an approved task, scope, and duration. |
 | Message queue | Infrastructure that buffers messages between producers and consumers for asynchronous processing. |
 | Metric | A numeric measurement aggregated or recorded over time. |
+| Mock-up | A mostly static visual design showing intended appearance, content hierarchy, and visual style. |
 | Object storage | Storage designed for objects such as files and their metadata, accessed through an API. |
 | Observability | The ability to understand system state and behaviour from available signals such as metrics, logs, and traces. |
 | Quality attribute | A measurable or discussable characteristic such as security, performance, availability, or maintainability. |
@@ -38,3 +43,6 @@
 | Trace | Telemetry that follows timed operations across components for one request or job. |
 | Trade-off | A choice that improves some qualities or constraints while accepting costs or disadvantages elsewhere. |
 | Trust boundary | A boundary where data or authority crosses between different trust or enforcement contexts. |
+| User story | A small statement of user or stakeholder value that starts a conversation and needs acceptance criteria. |
+| Wireframe | A low-fidelity representation of screen structure, information, actions, and states before detailed visual design. |
+| Workflow state | The recorded stage of an entity such as draft, submitted, approved, changes requested, or archived. |

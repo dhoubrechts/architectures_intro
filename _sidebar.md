@@ -1,6 +1,6 @@
 - [Course home](README.md)
 - [Roadmap and study method](course/00-course-roadmap.md)
-- [Student portal case](case-study/student-portal.md)
+- [Workplace learning case](case-study/workplace-learning-platform.md)
 
 - **Course**
   - [Foundation From idea to implementation](course/00-from-idea-to-implementation.md)
@@ -11,10 +11,10 @@
   - [5 Identity and security](course/05-identity-and-security.md)
   - [6 Reliability and observability](course/06-reliability-and-observability.md)
   - [7 Views and decisions](course/07-views-and-decisions.md)
-  - [8 Capstone and AI review](course/08-capstone-and-ai-review.md)
   - [Glossary](course/09-glossary.md)
   - [Implementation journey](course/10-implementation-journey.md)
-  - [Containers local to cloud](course/11-containers-local-to-cloud.md)
+  - [Docker local to cloud](course/11-containers-local-to-cloud.md)
+  - [Final Capstone and AI review](course/12-capstone-and-ai-review.md)
 
 - **Hands-on**
   - [Overview](hands-on/00-overview.md)
@@ -23,10 +23,11 @@
   - [2 Trace a web request](hands-on/02-trace-a-web-request.md)
   - [3 Model an application flow](hands-on/03-model-an-application-flow.md)
   - [4 Compare deployment options](hands-on/04-compare-deployment-options.md)
-  - [5 Threat-model the portal](hands-on/05-threat-model-the-portal.md)
+  - [5 Threat-model the platform](hands-on/05-threat-model-the-platform.md)
   - [6 Diagnose an incident](hands-on/06-diagnose-an-incident.md)
   - [7 Create views and an ADR](hands-on/07-create-views-and-an-adr.md)
-  - [8 Capstone](hands-on/08-capstone.md)
+  - [8 Docker local to cloud](hands-on/08-docker-local-to-cloud.md)
+  - [9 Capstone](hands-on/09-capstone.md)
 
 - **Assessment and references**
   - [Working end project](project/README.md)

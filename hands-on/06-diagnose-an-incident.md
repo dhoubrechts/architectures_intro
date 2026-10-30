@@ -2,7 +2,7 @@
 
 ## Goal
 
-Diagnose a result-day incident using incomplete evidence. Separate observations,
+Diagnose an evaluation-deadline incident using incomplete evidence. Separate observations,
 hypotheses, decisions, and proof.
 
 ## Learning objectives
@@ -22,16 +22,17 @@ You will practise how to:
 
 ## Scenario
 
-At 09:00, results are published. By 09:04, many students can sign in but receive
-HTTP `500` from the results page. Static pages remain fast.
+At 09:00 on the final evaluation deadline, academic supervisors open their
+assigned-student dashboards. By 09:04, many can sign in but receive HTTP `500`
+from the dashboard. Student static pages remain fast.
 
 Observed dashboard values:
 
 | Signal | 08:55 | 09:05 |
 | --- | ---: | ---: |
-| Result requests per second | 8 | 160 |
-| Result request p95 latency | 220 ms | 9.8 s |
-| Result HTTP 5xx rate | 0.1% | 37% |
+| Assigned-student requests per second | 8 | 160 |
+| Dashboard request p95 latency | 220 ms | 9.8 s |
+| Dashboard HTTP 5xx rate | 0.1% | 37% |
 | Application CPU | 28% | 52% |
 | Application instances | 3 | 3 |
 | Database active connections | 18 | 100 |
@@ -43,16 +44,16 @@ Observed dashboard values:
 Recent changes:
 
 - version `2026.10.30.2` was deployed at 08:30;
-- the release changed result-page enrichment from one query to one base query
-  plus a separate query per course;
+- the release changed dashboard enrichment from one bounded query to one base
+  query plus separate queries per student for phase, overdue activities, and review count;
 - no database schema migration ran;
 - automatic retries occur twice after a database acquisition timeout.
 
 Representative log excerpts:
 
 ```text
-09:05:11 ERROR request_id=7f2 route=/api/results db_pool_timeout_ms=5000
-09:05:11 WARN  request_id=7f2 retry=1 operation=load_course_details
+09:05:11 ERROR request_id=7f2 route=/api/supervisors/me/dossiers db_pool_timeout_ms=5000
+09:05:11 WARN  request_id=7f2 retry=1 operation=load_dossier_progress
 09:05:17 ERROR request_id=7f2 response_status=500 duration_ms=11240
 ```
 
@@ -85,8 +86,8 @@ and connection leakage or amplification.
 Draw a trace-style sequence for request `7f2`. Mark:
 
 - successful edge and application entry;
-- base result query;
-- course-detail queries;
+- base assigned-dossier query;
+- per-dossier phase, activity, and review queries;
 - connection wait;
 - retry;
 - timeout; and
@@ -102,7 +103,7 @@ Evaluate these actions:
 2. increase database connection limit immediately;
 3. disable retries and roll back the application release;
 4. restart the database; and
-5. hide the results link.
+5. hide all internship dossiers from students and supervisors.
 
 For each, record expected benefit, risk, reversibility, and evidence needed.
 Select a primary mitigation and an explicit success measure.

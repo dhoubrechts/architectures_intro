@@ -1,6 +1,6 @@
 # Hands-on labs
 
-The labs turn the Northstar student portal case into an evidence portfolio. Work
+The labs turn the Northstar Workplace Learning Hub case into an evidence portfolio. Work
 in order: each lab reuses earlier requirements, names, and decisions.
 
 ## How to work
@@ -26,10 +26,11 @@ explain consequences.
 | 2 — Trace a web request | Evidence log and request sequence | 75 min |
 | 3 — Model an application flow | Upload sequence and data-placement table | 90 min |
 | 4 — Compare deployment options | Weighted decision matrix | 75 min |
-| 5 — Threat-model the portal | Trust boundaries and control tests | 90 min |
+| 5 — Threat-model the platform | Trust boundaries and control tests | 90 min |
 | 6 — Diagnose an incident | Hypothesis and evidence log | 75 min |
 | 7 — Create views and an ADR | Diagram set and decision record | 120 min |
-| 8 — Capstone | Complete architecture portfolio and defence | 4-6 h |
+| 8 — Docker local to cloud | Docker Compose stack and cloud deployment evidence | 2-4 h |
+| 9 — Capstone | Complete implementation, architecture portfolio, and defence | 4-6 h |
 
 ## Tools
 
@@ -65,7 +66,8 @@ portfolio/
 ├── 05-threat-model.md
 ├── 06-incident-analysis.md
 ├── 07-views-and-adr.md
-└── 08-capstone.md
+├── 08-docker-local-to-cloud.md
+└── 09-capstone.md
 ```
 
 Keep diagrams inside the matching Markdown file where practical. Commit or save

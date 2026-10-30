@@ -24,26 +24,27 @@ Complete [Module 4](04-infrastructure-cloud-and-delivery.md).
   on a specific resource in the current context.
 - **Audit** records security-relevant actions so they can be reviewed.
 
-A student who signs in successfully is authenticated. The backend must still
-check whether that student may view result `124`. This check belongs at the
+A workplace mentor who signs in successfully is authenticated. The backend must
+still check whether that mentor is currently assigned to dossier `124` and may
+perform the requested review. This check belongs at the
 server-side enforcement point, not only in the browser.
 
 ```text
-Identity: student-123
-Action: read
-Resource: result-124
-Context: active enrolment, normal session
-Decision: deny unless ownership or delegated permission matches
+Identity: workplace-mentor-45
+Action: approve-logbook-entry
+Resource: dossier-124/logbook-18
+Context: active mentor assignment, entry submitted, normal session
+Decision: deny unless assignment, action, and workflow state match
 ```
 
 ## Federation, OpenID Connect, and OAuth
 
-The portal can delegate sign-in to the institutional identity provider.
+The Workplace Learning Hub can delegate sign-in to the institutional identity provider.
 OpenID Connect builds an identity layer on OAuth 2.0 and can provide information
 about the authenticated subject. OAuth is a framework for delegated
 authorization; it is not, by itself, a login protocol.
 
-The portal must validate tokens as required for its role and configuration,
+The platform must validate tokens as required for its role and configuration,
 including relevant issuer, audience, signature, time, and flow properties. A
 token that is cryptographically valid is not proof that every requested action
 is allowed. Application authorization remains necessary.
@@ -59,8 +60,8 @@ levels, identities, ownership domains, or enforcement contexts.
 ```mermaid
 flowchart LR
     Internet((Internet)) -->|untrusted request| Edge[Public edge]
-    Edge -->|filtered request| App[Portal application]
-    App -->|service identity| DB[(Results database)]
+    Edge -->|filtered request| App[Workplace Learning application]
+    App -->|service identity| DB[(Dossier database)]
     App -->|federated protocol| IdP[Institutional IdP]
     App -->|upload permission| Store[(Object storage)]
 ```
@@ -98,9 +99,9 @@ containment and detection.
 
 The application should not connect to the database as an all-powerful
 administrator. Separate runtime, migration, reporting, and support permissions
-where practical. A scan worker needs access to pending uploads, not the full
-results table. The service desk needs diagnostic metadata, not unrestricted
-academic records.
+where practical. A document worker needs access to pending uploads, not full
+dossiers or assessments. The service desk needs diagnostic metadata, not
+unrestricted internship records, feedback, or documents.
 
 Privileges also have time and environment dimensions. Temporary administrative
 access and separate production identities reduce long-lived exposure.
@@ -136,7 +137,7 @@ access rules.
 
 | Threat | Control | Verification example |
 | --- | --- | --- |
-| Student changes an ID to read another result | Server checks subject-to-result permission on every request | Automated test uses two student identities and cross-access attempts |
+| Student changes an ID to read another dossier | Server checks role, assignment, object, and action on every request | Automated test uses two student identities and cross-dossier attempts |
 | Stolen upload URL remains usable | Narrow scope and short expiry | Test after expiry and for a different object key |
 | Script injects content into a page | Context-appropriate output handling and content policy | Security test with encoded attack strings |
 | Database credential leaks | Managed secret, restricted identity, rotation | Scan repository and rotate a test credential |
@@ -149,9 +150,9 @@ checklist without context.
 ## Practice and self-check
 
 1. Draw the sign-in flow and mark trust boundaries.
-2. Explain why a valid identity token does not authorize access to every result.
-3. List the minimum permissions for the portal runtime, scan worker, and support role.
-4. Create one security test for result access and one for upload permission.
+2. Explain why a valid workplace-mentor identity does not authorize access to every internship dossier.
+3. List the minimum permissions for the platform runtime, document worker, and support role.
+4. Create one security test for dossier assignment and one for document upload permission.
 5. Name three places where secrets commonly leak.
 
 ## Summary
@@ -162,4 +163,4 @@ checklist without context.
 - Least privilege applies to people, services, environments, data, and time.
 - A security control is stronger when it has a concrete verification method.
 
-Continue with [Lab 5 — Threat-model the portal](../hands-on/05-threat-model-the-portal.md).
+Continue with [Lab 5 — Threat-model the platform](../hands-on/05-threat-model-the-platform.md).

@@ -66,7 +66,7 @@ Container orchestration can automate placement, service discovery, health-based
 replacement, rollout, and scaling. It also introduces control-plane knowledge,
 networking, policies, observability, upgrades, and incident procedures.
 
-For one portal owned by a small team, a managed application platform may be the
+For one workplace learning platform owned by a small team, a managed application platform may be the
 simpler choice. If the organisation already operates a reliable container
 platform for many teams, using it may be reasonable. Capability and total
 portfolio context change the decision.
@@ -105,7 +105,7 @@ session and business data live elsewhere. This does not mean the system is
 stateless: the state has moved to databases, object stores, caches, or tokens.
 
 Document where state lives. A container restart must not silently lose an
-accepted assignment. Local disk may be appropriate for temporary processing,
+accepted logbook entry, document, or review. Local disk may be appropriate for temporary processing,
 but the lifecycle and recovery consequence must be explicit.
 
 ## Cost is an architecture quality
@@ -124,7 +124,7 @@ Compute is only one cost. Include:
 A more complex platform can reduce one infrastructure cost while increasing
 operational labour. Compare total cost under realistic normal and peak usage.
 
-## Option comparison for the portal
+## Option comparison for the Workplace Learning Hub
 
 | Driver | One VM plus managed database | Managed application platform | Orchestrated containers |
 | --- | --- | --- | --- |
@@ -139,7 +139,7 @@ skills.
 
 ## Practice and self-check
 
-1. Compare a VM, container platform, and managed application platform for the portal.
+1. Compare a VM, container platform, and managed application platform for the Workplace Learning Hub.
 2. Name five customer responsibilities that remain with a managed database.
 3. Draw a delivery path and show where tests, migration, approval, and rollback occur.
 4. List five cost items that a simple deployment diagram may hide.

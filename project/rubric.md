@@ -4,9 +4,9 @@
 
 | Criterion | Weight | Pass evidence | Strong evidence |
 | --- | ---: | --- | --- |
-| Working vertical slice | 15% | Frontend, backend, and data complete required journeys | Clear error states, accessible interaction, and consistent API behaviour |
+| Working vertical slice | 15% | Wireframes lead to a working frontend, backend, data, logbook, document, and review journey | Clear multi-role states, accessible interaction, and consistent API behaviour |
 | Architecture and traceability | 15% | Required views and ADRs match implementation | Requirements, tests, deployments, and signals are linked and current |
-| Identity and authorization | 15% | Approved authentication and server-side role/object checks | Thorough negative tests, least privilege, and clear trust boundaries |
+| Identity and authorization | 15% | Approved authentication plus role, assignment, object, and state checks | Thorough student, supervisor, and mentor negative tests, least privilege, and clear trust boundaries |
 | Secure implementation | 10% | Validation, safe data access, secrets, and errors are addressed | Threat-informed controls are automated and residual risks are explicit |
 | Tests and quality | 10% | Unit and integration tests cover critical paths | Contract, migration, failure, and security tests prevent regressions |
 | Pipeline and DTAP | 15% | Automated build, tests, scans, packaging, and controlled promotion | Same traceable artefact, protected credentials, gate policy, and deployment verification |
@@ -17,7 +17,8 @@
 
 The project cannot pass while any of these conditions remains:
 
-- another student can access protected result data by changing an identifier;
+- a student can access another student's dossier, document, feedback, or logbook by changing an identifier;
+- a workplace mentor can access a student who is not currently assigned to them;
 - real credentials or personal data are committed;
 - the frontend connects directly to the database with privileged credentials;
 - pipeline or deployment evidence is fabricated or replaced by screenshots without source;
@@ -35,7 +36,8 @@ Group output does not replace individual understanding.
 
 Stretch work is considered only after the minimum slice is reliable and secure:
 
-- asynchronous assignment scanning with idempotent processing;
+- asynchronous document scanning with idempotent processing;
+- configurable process templates or advanced assessment forms;
 - OpenID Connect integration with an instructor-approved provider;
 - infrastructure as code and policy checks;
 - software bill of materials and artefact signing;

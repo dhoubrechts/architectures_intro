@@ -1,13 +1,20 @@
-# Intro to Architectures
+# Applied Application Architecture: From Idea to Cloud
 
-Repository name: `architectures_intro`
+Repository name: `applied_application_architecture`
 
 ## Course overview
 
 This course teaches you to reason about complete IT systems instead of isolated
 products. You will learn how users, networks, applications, data, identity,
 infrastructure, security, and operations work together. The course uses one
-continuous case: a fictional student portal for Northstar University College.
+continuous case: the fictional **Northstar Workplace Learning Hub**, a platform
+for managing internships and workplace learning.
+
+The domain is inspired by the type of integrated internship process supported
+by [OnStage](https://www.onstagesoftware.com/en), including placement,
+guidance, documents, progress, assessment, and collaboration with external
+organisations. The course project is an independent fictional implementation;
+it does not copy the OnStage interface, source code, branding, or private data.
 
 Architecture is not a list of technologies. It is a set of important decisions
 about responsibilities, boundaries, relationships, and trade-offs. By the end
@@ -20,6 +27,7 @@ defend a design with evidence.
 After completing the course, you can:
 
 - distinguish functional requirements from quality attributes and constraints;
+- turn user journeys into simple wireframes, mock-ups, stories, and API needs;
 - map a user journey to components, dependencies, protocols, and data flows;
 - explain the roles of clients, DNS, proxies, applications, APIs, databases,
   object storage, queues, and identity providers;
@@ -40,12 +48,12 @@ After completing the course, you can:
 | 2 | [Networks and communication](course/02-networks-and-communication.md) | [Trace a web request](hands-on/02-trace-a-web-request.md) |
 | 3 | [Applications, APIs, and data](course/03-applications-apis-and-data.md) | [Model an application flow](hands-on/03-model-an-application-flow.md) |
 | 4 | [Infrastructure, cloud, and delivery](course/04-infrastructure-cloud-and-delivery.md) | [Compare deployment options](hands-on/04-compare-deployment-options.md) |
-| 5 | [Identity and security by design](course/05-identity-and-security.md) | [Threat-model the portal](hands-on/05-threat-model-the-portal.md) |
+| 5 | [Identity and security by design](course/05-identity-and-security.md) | [Threat-model the platform](hands-on/05-threat-model-the-platform.md) |
 | 6 | [Scalability, reliability, and observability](course/06-reliability-and-observability.md) | [Diagnose an incident](hands-on/06-diagnose-an-incident.md) |
 | 7 | [Architecture views and decisions](course/07-views-and-decisions.md) | [Create views and an ADR](hands-on/07-create-views-and-an-adr.md) |
-| 8 | [Capstone and critical AI review](course/08-capstone-and-ai-review.md) | [Defend an architecture](hands-on/08-capstone.md) |
 | Implementation | [From first vertical slice to production](course/10-implementation-journey.md) | [Working end project](project/README.md) |
-| Deployment | [Containers from local test to cloud](course/11-containers-local-to-cloud.md) | [Cloud deployment requirements](project/cloud-deployment-requirements.md) |
+| Deployment | [Docker from local test to cloud](course/11-containers-local-to-cloud.md) | [Docker-to-cloud lab](hands-on/08-docker-local-to-cloud.md) |
+| Final | [Capstone and critical AI review](course/12-capstone-and-ai-review.md) | [Defend the implemented architecture](hands-on/09-capstone.md) |
 
 Use the [course roadmap](course/00-course-roadmap.md) and the
 [hands-on overview](hands-on/00-overview.md) to plan your work. The
@@ -95,7 +103,7 @@ The course deliberately grows in difficulty:
 2. **Developing — model and test.** Draw flows, write acceptance criteria,
    inspect requests, compare options, and identify threats.
 3. **Applied — build a vertical slice.** Connect a small frontend to a backend
-   API and datastore, then run the parts as local containers with automated
+   API and datastore, then run the parts as local Docker containers with automated
    tests and configuration per environment.
 4. **Integrated — deliver securely.** Add DTAP promotion, pipeline checks, an
    externally accessible cloud deployment, observability, recovery, and

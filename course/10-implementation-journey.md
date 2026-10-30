@@ -38,7 +38,7 @@ The final project may use any instructor-approved stack, but it must preserve
 these responsibilities:
 
 ```text
-student-portal/
+workplace-learning-hub/
 ├── frontend/              # Browser UI and client-side tests
 ├── backend/               # API, business rules, authorization, server tests
 ├── database/              # Schema, migrations, and safe seed data
@@ -74,12 +74,13 @@ parts, and see the frontend report backend health.
 
 ## Increment 1 — Read data end to end
 
-Goal: display a safe list of the signed-in user's fictional results.
+Goal: display the signed-in student's fictional internship dossier, current
+phase, assigned supervisors, and required activities.
 
 Build:
 
 1. a frontend page calls a backend endpoint;
-2. the backend validates the request and queries seeded data;
+2. the backend validates the request, authorizes the dossier assignment, and queries seeded data;
 3. the API returns a documented response;
 4. the frontend handles loading, success, empty, forbidden, and failure states;
 5. tests cover the API contract and data mapping.
@@ -95,12 +96,12 @@ sent freely by the browser.
 - database migration and repeatable seed;
 - frontend component or page test;
 - backend unit and integration tests; and
-- negative test showing student A cannot read student B's result.
+- negative test showing student A cannot read student B's dossier.
 
 ## Increment 2 — Write data safely
 
-Goal: implement one validated write, such as creating a draft submission record
-or an administrator adding a fictional notification.
+Goal: implement one validated workflow write, such as a student submitting a
+logbook entry and the assigned workplace mentor approving or returning it.
 
 Add:
 
@@ -116,8 +117,8 @@ relevant validation because a client can be changed or bypassed.
 
 ### Exit evidence
 
-Demonstrate valid, invalid, unauthorized, and repeated requests. Show database
-state and audit evidence after each case.
+Demonstrate valid, invalid, unauthorized, unassigned-mentor, wrong-state, and
+repeated requests. Show database state and audit evidence after each case.
 
 ## Increment 3 — Run the application in local containers
 

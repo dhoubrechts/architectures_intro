@@ -2,7 +2,7 @@
 
 ## Goal
 
-Create a small, consistent architecture description for the portal and document
+Create a small, consistent architecture description for the Workplace Learning Hub and document
 one significant decision.
 
 ## Learning objectives
@@ -35,19 +35,20 @@ sequence views.
 
 ## Part 2 — Context view
 
-Create a system context diagram for the portal. Include actors and external
+Create a system context diagram for the Workplace Learning Hub. Include actors and external
 systems only. Add:
 
 - title and scope;
 - relationship labels;
-- a short description of portal responsibility; and
+- a short description of platform responsibility; and
 - one paragraph on what is out of scope.
 
 ## Part 3 — Container view
 
-Create a container view with browser application, portal backend, results
-database, object storage, scan queue, and scan worker. Add external identity and
-notification systems for context.
+Create a container view with browser application, Workplace Learning API,
+dossier database, object storage, document queue, and document worker. Add
+institutional identity, external-mentor identity, notification, and student
+information systems for context.
 
 Each element must have:
 
@@ -71,10 +72,13 @@ Map containers to a production environment using your Lab 4 decision. Show:
 
 State which failure domains are shown and which are not.
 
-## Part 5 — Upload sequence
+## Part 5 — Logbook and document sequences
 
-Create a sequence for successful upload and scanning. Add alternate paths for
-expired permission and rejected file. Ensure names match the container view.
+Create one sequence for student logbook submission and assigned workplace-mentor
+approval. Create a second sequence for successful document upload, scanning, and
+academic-supervisor review. Add alternate paths for changed mentor assignment,
+expired upload permission, rejected file, and unassigned supervisor. Ensure names
+match the container view.
 
 ## Part 6 — Consistency review
 
@@ -82,14 +86,14 @@ Create a table:
 
 | Element | Context | Container | Deployment | Sequence | Consistent responsibility? |
 | --- | :---: | :---: | :---: | :---: | --- |
-| Portal backend | | X | X | X | |
+| Workplace Learning API | | X | X | X | |
 
 Correct mismatches before continuing.
 
 ## Part 7 — Write ADR 001
 
 Decision: **managed application platform or orchestrated containers for the
-first portal release**.
+first Workplace Learning Hub release**.
 
 Include:
 

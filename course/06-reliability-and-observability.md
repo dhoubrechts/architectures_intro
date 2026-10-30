@@ -19,8 +19,8 @@ Complete [Module 5](05-identity-and-security.md).
 ## Reliability begins with user journeys
 
 A process being alive is not the same as the service working. Define reliability
-for a meaningful operation, such as “an authenticated student can view their own
-results.” Measure successful, authorised completion and latency, not only host
+for a meaningful operation, such as “an assigned workplace mentor can review a
+submitted logbook entry.” Measure successful, authorised completion and latency, not only host
 uptime.
 
 ### Related terms
@@ -72,7 +72,7 @@ shared state lives in suitable external stores. It can expose bottlenecks in:
 - network bandwidth; or
 - serial business operations.
 
-During result publication, adding application instances may create more database
+During an evaluation deadline, adding application instances may create more database
 connections and worsen exhaustion. Scale the constrained resource or reduce
 load after measuring the actual limit.
 
@@ -93,10 +93,10 @@ only operations that are safe, limit attempts, and observe retry volume.
 
 Choose indicators from user outcomes:
 
-- successful result-view rate;
-- latency distribution for result requests;
-- assignment upload acceptance rate;
-- scan backlog age;
+- successful assigned-dossier view rate;
+- latency distribution for supervisor-dashboard requests;
+- logbook submission and approval rate;
+- document scan and review backlog age;
 - authentication success rate; and
 - notification processing delay.
 
@@ -130,14 +130,15 @@ retention, cost, and behaviour during an outage.
 
 ## Incident reasoning
 
-Scenario: students can sign in, but opening results returns HTTP `500`. The edge
-is reachable, identity succeeds, and database connection usage is at its limit.
+Scenario: academic supervisors can sign in, but opening their assigned-student
+dashboard returns HTTP `500`. The edge is reachable, identity succeeds, and
+database connection usage is at its limit.
 
 Supported conclusions:
 
 - public routing and at least part of TLS and HTTP processing work;
 - the identity flow worked for affected users;
-- result processing failed server-side; and
+- assigned-dossier processing failed server-side; and
 - database connection pressure is a strong hypothesis.
 
 Not yet proven:
@@ -153,9 +154,9 @@ short-term mitigation, then correct the structural cause and test peak behaviour
 
 ## Practice and self-check
 
-1. Identify three portal single points of failure and their failure domains.
-2. Propose RTO and RPO questions for results and assignment files.
-3. Design a minimal dashboard for result-day traffic.
+1. Identify three Workplace Learning Hub single points of failure and their failure domains.
+2. Propose RTO and RPO questions for dossiers, logbooks, reviews, and uploaded documents.
+3. Design a minimal dashboard for an evaluation-deadline peak.
 4. Explain how aggressive retries can create a retry storm.
 5. List evidence that would distinguish slow queries from connection leakage.
 

@@ -103,7 +103,7 @@ and label unobserved internal processing as an assumption.
 
 ## Part 5 — Failure hypotheses
 
-Scenario: the browser reports that the portal cannot load.
+Scenario: the browser reports that the Workplace Learning Hub cannot load.
 
 Create five competing hypotheses covering at least DNS, TLS, HTTP edge,
 application, and data dependency.

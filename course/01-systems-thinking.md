@@ -14,7 +14,7 @@ After this module, you can:
 
 ## Prerequisites
 
-Read the [student portal case](../case-study/student-portal.md). No architecture
+Read the [workplace learning case](../case-study/workplace-learning-platform.md). No architecture
 experience is required.
 
 ## What is IT architecture?
@@ -30,19 +30,19 @@ help answer a real question.
 
 Consider these three statements:
 
-- “The portal uses a database.” This names a component.
-- “The portal stores results in a relational database.” This adds responsibility.
-- “The portal uses a managed relational database because records need
+- “The platform uses a database.” This names a component.
+- “The platform stores internship dossiers, logbooks, and reviews in a relational database.” This adds responsibility.
+- “The platform uses a managed relational database because workflow records need
   transactions and the small team cannot operate a database cluster; this adds
   recurring cost and provider dependency.” This communicates a decision and its
   trade-off.
 
 ## Four types of design input
 
-| Type | Question | Portal example |
+| Type | Question | Workplace Learning Hub example |
 | --- | --- | --- |
-| Functional requirement | What must the system do? | A student can view personal results. |
-| Quality attribute | How well must it do it? | Result viewing remains responsive during publication peaks. |
+| Functional requirement | What must the system do? | A student submits a logbook entry and the assigned mentor reviews it. |
+| Quality attribute | How well must it do it? | Assigned-student dashboards remain responsive during evaluation deadlines. |
 | Constraint | What limits the solution space? | The institutional identity provider must remain in use. |
 | Assumption | What do we currently believe? | Peak traffic lasts about 30 minutes. |
 
@@ -52,16 +52,16 @@ may fail.
 
 ### Turn vague qualities into scenarios
 
-“The portal must be fast” is difficult to test. A quality-attribute scenario is
+“The platform must be fast” is difficult to test. A quality-attribute scenario is
 more useful:
 
 | Part | Example |
 | --- | --- |
-| Source | Authenticated students |
-| Stimulus | Request the results page |
-| Environment | First 20 minutes after publication |
-| Artefact | Portal API and result data store |
-| Response | Return authorised results without leaking another student's data |
+| Source | Authenticated academic supervisors |
+| Stimulus | Request the assigned-student dashboard |
+| Environment | Evaluation deadline with concurrent reviews |
+| Artefact | Workplace Learning API and dossier store |
+| Response | Return only currently assigned dossiers without leaking another student's data |
 | Measure | 95% of responses under an agreed threshold at an agreed request rate |
 
 Stakeholders must agree on the numbers. Architects should not invent service
@@ -76,16 +76,16 @@ flowchart LR
     User[Student] --> Browser
     Browser --> DNS[DNS resolver]
     Browser --> Edge[Reverse proxy or edge]
-    Edge --> App[Portal application]
+    Edge --> App[Workplace Learning application]
     App --> IdP[Identity provider]
-    App --> DB[(Results database)]
+    App --> DB[(Dossier database)]
 ```
 
 Every component can appear healthy in isolation while the complete journey
 fails. DNS can resolve correctly while authorization rejects the request. The
-web page can load while the results query times out. The identity provider can
-authenticate the student while the backend incorrectly authorizes access to
-another student's record.
+web page can load while the assigned-dossier query times out. The identity
+provider can authenticate a workplace mentor while the backend incorrectly
+authorizes access to an unassigned student's dossier.
 
 Systems thinking asks:
 
@@ -99,7 +99,8 @@ Systems thinking asks:
 ## Responsibilities and boundaries
 
 Give each major component a clear responsibility. “Backend” is too broad if it
-means authentication, academic rules, file processing, notifications, and every
+means authentication, placement rules, logbook workflows, file processing,
+reviews, notifications, and every
 data operation without further explanation.
 
 Boundaries matter because they indicate a change in responsibility, technology,
@@ -112,8 +113,8 @@ Use a dependency table before drawing a detailed diagram:
 | Component | Responsibility | Depends on | User-visible failure |
 | --- | --- | --- | --- |
 | Identity provider | Establish institutional identity | Directory and login policy | Sign-in fails |
-| Portal application | Enforce rules and serve portal functions | Identity, database, storage | Page or action fails |
-| Results database | Persist academic result records | Storage and database service | Results unavailable or stale |
+| Workplace Learning application | Enforce workflow and authorization rules | Identity, database, storage | Page or action fails |
+| Dossier database | Persist placement, logbook, phase, and review records | Storage and database service | Progress or approvals unavailable or stale |
 
 ## Trade-offs, not universal best practices
 
@@ -129,7 +130,7 @@ Use a trade-off statement:
 
 Example:
 
-> We start with a modular monolith because one small team owns the portal and
+> We start with a modular monolith because one small team owns the Workplace Learning Hub and
 > expected scale is moderate. This simplifies deployment and debugging, but
 > modules cannot be scaled independently. We will reconsider separation if
 > measurements show one workload dominates capacity or release coupling blocks
@@ -150,10 +151,10 @@ Example:
    constraint, or assumption: “use the existing identity provider”; “students
    upload PDF files”; “the service is easy to recover”; “peak load is 600
    requests per second.”
-2. Name six components that may participate when a student views a result.
+2. Name six components that may participate when a workplace mentor reviews a logbook entry.
 3. For each component, identify one dependency and one failure symptom.
 4. Explain why “deploy three load balancers” is not a requirement.
-5. Write one measurable quality scenario for assignment upload.
+5. Write one measurable quality scenario for document upload and review.
 
 ## Summary
 

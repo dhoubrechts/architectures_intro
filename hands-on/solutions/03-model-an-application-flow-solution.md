@@ -1,77 +1,111 @@
-# Lab 3 solution — Model an application flow
+# Lab 3 solution — Model a logbook and document workflow
 
 ## Responsibilities
 
 | Responsibility | Authoritative component |
 | --- | --- |
-| Display progress and status | Frontend, based on API state |
-| Authenticate and authorize submission | Backend API |
-| Verify assignment window and one-final rule | Backend API using database state |
-| Store PDF bytes | Object storage |
-| Persist submission metadata and state | Relational database |
-| Buffer scan work | Queue |
-| Inspect content and record scan result | Scan worker, using constrained access |
+| Display phase, progress, and state | Frontend based on API state |
+| Authenticate and resolve current dossier assignment | Backend API |
+| Validate logbook date, duration, phase, and transition | Backend API using database state |
+| Persist dossier, logbook, feedback, and review state | Relational database |
+| Store document bytes | Object storage |
+| Buffer document scan work | Queue |
+| Inspect content and record scan result | Document worker with constrained access |
+| Record append-oriented audit evidence | Backend or trusted worker performing the action |
 
-The browser may validate size for usability, but the service must enforce size,
-type, authorization, and state server-side.
+The browser can validate for usability, but the backend must enforce every
+security-relevant rule. A role label without a current dossier assignment is insufficient.
 
 ## State transitions
+
+### Logbook
+
+| From | Event | Authorized actor | To |
+| --- | --- | --- | --- |
+| draft | Submit valid week | Student assigned to dossier | submitted |
+| submitted | Approve hours | Currently assigned workplace mentor | approved |
+| submitted | Request changes | Currently assigned workplace mentor | changes_requested |
+| changes_requested | Resubmit corrected entry | Student assigned to dossier | submitted |
+
+### Document
 
 | From | Event | Authorized actor | To |
 | --- | --- | --- | --- |
 | none | Approved initiate request | Backend API | initiated |
 | initiated | Storage confirms expected object | Trusted completion process | uploaded |
-| uploaded | Scan message claimed | Scan worker | scanning |
-| scanning | Clean result | Scan worker | accepted |
-| scanning | Malware or policy rejection | Scan worker | rejected |
-| initiated | Permission expires without object | Expiry job | expired |
-| scanning | Retry limit exceeded | Worker policy | review_required |
+| uploaded | Scan message claimed | Document worker | scanning |
+| scanning | Clean result | Document worker | accepted |
+| scanning | Malware or policy rejection | Document worker | rejected |
+| accepted | Reviewer opens assigned activity | Academic supervisor | under_review |
+| under_review | Feedback recorded | Assigned academic supervisor | reviewed |
 
-## Sequence
+## Logbook sequence
 
 ```mermaid
 sequenceDiagram
     actor S as Student
-    participant B as Browser
-    participant A as Portal API
-    participant D as Results Database
-    participant O as Object Storage
-    participant Q as Scan Queue
-    participant W as Scan Worker
-    S->>B: Select final PDF
-    B->>A: Initiate submission with idempotency key
-    A->>A: Authenticate and authorize
-    A->>D: Create or return initiated record
-    D-->>A: Submission ID
-    A-->>B: Short-lived permission for one object key
-    B->>O: Upload PDF
-    O-->>B: Upload complete
-    B->>A: Confirm upload
-    A->>O: Verify expected object metadata
-    A->>D: Mark uploaded
-    A->>Q: Enqueue scan request
-    Q->>W: Deliver scan request
-    W->>O: Read pending object
-    W->>W: Scan and validate
-    W->>D: Record accepted or rejected
-    B->>A: Get submission status
-    A-->>B: Current state
+    participant A as Workplace Learning API
+    participant D as Dossier Database
+    actor M as Workplace Mentor
+    participant N as Notification Provider
+    S->>A: Submit logbook with idempotency key
+    A->>A: Validate identity dossier phase hours and state
+    A->>D: Create submitted entry and audit event
+    A->>N: Notify currently assigned mentor
+    M->>A: Approve or request changes
+    A->>A: Verify current mentor assignment and entry state
+    A->>D: Record review transition and audit event
+    A-->>M: Show new state
+    S->>A: Read current entry state
+    A-->>S: Approved or changes requested
 ```
 
-If the browser times out after upload, it repeats the initiate or confirmation
-with the same idempotency key. The API returns the existing submission state
-instead of creating a second final record.
+If the mentor assignment changed, the former mentor is denied a new review
+action. The historical submission and previous assignment evidence remain.
+
+## Document sequence
+
+```mermaid
+sequenceDiagram
+    actor S as Student
+    participant A as Workplace Learning API
+    participant D as Dossier Database
+    participant O as Object Storage
+    participant Q as Document Queue
+    participant W as Document Worker
+    actor R as Academic Supervisor
+    S->>A: Initiate document for dossier activity
+    A->>A: Authorize dossier phase activity size and type
+    A->>D: Create initiated document version
+    A-->>S: Short-lived permission for one object key
+    S->>O: Upload document
+    S->>A: Confirm upload
+    A->>O: Verify expected object metadata
+    A->>D: Mark uploaded
+    A->>Q: Enqueue scan
+    Q->>W: Deliver scan request
+    W->>O: Read pending object
+    W->>D: Record accepted or rejected
+    R->>A: Review accepted document
+    A->>A: Verify current academic-supervisor assignment
+    A->>D: Record feedback and reviewed state
+```
+
+After an uncertain timeout, the client repeats with the same idempotency key.
+The API returns the existing entry or document version instead of duplicating it.
 
 ## Data placement
 
 | Data | Authoritative store | Concern |
 | --- | --- | --- |
-| Submission metadata and state | Relational database | Transaction and unique final-submission rule |
-| PDF bytes | Object storage | Narrow access, retention, scan quarantine |
-| Scan request | Queue | Duplicate delivery and retry limit |
-| File hash | Relational metadata | Calculate from trusted processing path |
-| Public instructions | Database or content source, optionally cached | Invalidation after update |
-| Audit event | Protected audit store | Integrity, access, retention, no secret payload |
+| Dossier, placement, phase, and assignments | Relational database | transaction, assignment history, privacy |
+| Logbook, hours, feedback, and review state | Relational database | workflow integrity and dispute evidence |
+| Document bytes | Object storage | narrow access, quarantine, retention, version |
+| Document metadata and scan state | Relational database | consistency with object lifecycle |
+| Scan request | Queue | duplicate delivery and retry limit |
+| Process instructions | Database or content source, optionally cached | invalidation after template update |
+| Audit event | Protected append-oriented store | integrity, access, retention, minimal content |
 
-Negative tests attempt cross-student reads, lecturer access outside assigned
-course, and reuse of an upload permission for a different object key.
+Negative tests cover cross-dossier student access, former or unassigned mentor,
+unassigned academic supervisor, expired permission, different object key, and
+approval from an invalid workflow state.

@@ -11,11 +11,11 @@ broken or unreproducible local stack.
 - Backend uses a local synthetic datastore.
 - Success, failure, and unauthorized paths have automated tests.
 
-### Stage 2 — Local container Test environment
+### Stage 2 — Local Docker Test environment
 
-- Separate frontend and backend images build from versioned source.
+- Separate frontend and backend Docker images build from versioned Dockerfiles.
 - A local datastore container starts with migrations and synthetic seed data.
-- One compose command or equivalent starts the stack.
+- One `docker compose up` workflow starts the stack.
 - Only the required frontend or ingress and optional debugging port are exposed.
 - Backend and datastore communication remains on a private container network.
 - Stop, restart, recreation, and intentional volume cleanup are documented.
@@ -33,7 +33,7 @@ broken or unreproducible local stack.
 - The same approved frontend and backend image versions are deployed.
 - A public DNS name resolves to an HTTPS endpoint.
 - Authorised reviewers can access the frontend from another network.
-- Identity and object-level authorization protect portal data.
+- Identity plus role, dossier-assignment, object, and state authorization protect workplace-learning data.
 - The backend and datastore are not broadly public.
 - Environment secrets come from the approved cloud mechanism.
 - Migrations run through a controlled, observable job.
@@ -47,16 +47,17 @@ broken or unreproducible local stack.
 - The team demonstrates rollback, forward fix, or reproducible recovery.
 - Cost, quotas, and cleanup are reviewed.
 
-## Minimum container artefacts
+## Minimum Docker artefacts
 
-- frontend container build definition;
-- backend container build definition;
-- local compose or equivalent configuration;
+- frontend `Dockerfile`;
+- backend `Dockerfile`;
+- local `compose.yaml` or equivalent Docker Compose file;
 - safe environment-variable example;
 - migration and seed mechanism;
 - health/readiness definitions;
 - image scan and software inventory evidence; and
-- commands for build, start, test, stop, and cleanup.
+- documented `docker build`, `docker compose up`, test, `docker compose down`,
+  and intentional volume-cleanup commands.
 
 ## Minimum cloud artefacts
 
@@ -66,7 +67,7 @@ broken or unreproducible local stack.
 - network and ingress rules;
 - workload identity and secret references;
 - deployment record with source commit and image digests;
-- post-deployment smoke and authorization results;
+- post-deployment smoke, workflow, and assignment-based authorization results;
 - dashboard or telemetry evidence;
 - cost and quota guardrails; and
 - exact cleanup inventory and owner approval.
@@ -78,9 +79,10 @@ An authorised person who is not connected to the developer's local network must:
 1. resolve the public course-project name;
 2. establish HTTPS without bypassing certificate warnings;
 3. sign in through the approved method;
-4. view only the fictional records assigned to their identity;
-5. receive a safe denial for a protected record outside their scope; and
-6. provide the correlation identifier for a deliberately failed request so the
+4. view only the fictional internship dossiers assigned to their identity;
+5. complete the permitted student, academic-supervisor, or workplace-mentor action;
+6. receive a safe denial for a dossier or document outside their scope; and
+7. provide the correlation identifier for a deliberately failed request so the
    team can find its telemetry.
 
 ## Safety and cost rules

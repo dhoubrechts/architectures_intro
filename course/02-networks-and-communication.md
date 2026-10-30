@@ -19,7 +19,7 @@ and web browsers is helpful.
 
 ## One request uses several protocols
 
-When a student opens `https://portal.example.edu/results`, the browser may:
+When a student opens `https://workplace-learning.example.edu/dossier`, the browser may:
 
 1. parse the URL and check local state or caches;
 2. ask a resolver for addresses associated with the host name;
@@ -42,7 +42,7 @@ needed for the question, not pretend every request follows one identical path.
 | TCP | Reliable ordered byte stream | Application requests are valid |
 | UDP | Datagram transport | Reliability unless a higher protocol provides it |
 | QUIC | Secure multiplexed transport over UDP | Application authorization is correct |
-| TLS | Confidentiality, integrity, and peer authentication as configured | The signed-in user may access a specific result |
+| TLS | Confidentiality, integrity, and peer authentication as configured | The signed-in user may access a specific dossier or review |
 | HTTP | Request and response semantics | The business operation is correct |
 
 HTTP/1.1 and HTTP/2 commonly use TCP; HTTP/3 uses QUIC over UDP. Avoid teaching
@@ -58,8 +58,8 @@ A simplified diagram often places DNS before the server:
 sequenceDiagram
     participant B as Browser
     participant R as DNS resolver
-    participant E as Portal edge
-    B->>R: Resolve portal.example.edu
+    participant E as Workplace Learning edge
+    B->>R: Resolve workplace-learning.example.edu
     R-->>B: Address records
     B->>E: HTTPS request to resolved endpoint
     E-->>B: HTTP response over protected connection
@@ -145,8 +145,8 @@ hypotheses and choose a test that distinguishes them.
 ## Practice and self-check
 
 1. Draw the path from browser to database and label at least three protocols.
-2. Explain why a successful DNS lookup does not prove the portal is available.
-3. Why should the results database normally not be public?
+2. Explain why a successful DNS lookup does not prove the Workplace Learning Hub is available.
+3. Why should the internship dossier database normally not be public?
 4. A login page loads, but submitting it times out. Name three possible failure
    locations and an observation that would separate them.
 5. Explain the difference between a reverse proxy and the application behind it.

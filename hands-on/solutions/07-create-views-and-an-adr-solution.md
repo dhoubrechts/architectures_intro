@@ -12,23 +12,25 @@
 
 ```mermaid
 flowchart LR
-    Student[Student] -->|views results and submits work| Portal[Northstar Student Portal]
-    Lecturer[Lecturer] -->|publishes results and reviews submissions| Portal
-    Admin[Administrator] -->|performs authorised corrections| Portal
-    Portal -->|federated sign-in| IdP[Institutional Identity Provider]
-    Portal -->|notification delivery| Notify[Notification Provider]
+    Student[Student] -->|maintains dossier logbook and documents| Hub[Northstar Workplace Learning Hub]
+    Academic[Academic Supervisor] -->|guides and assesses assigned students| Hub
+    Mentor[Workplace Mentor] -->|approves hours and gives feedback| Hub
+    Coordinator[Internship Coordinator] -->|configures and monitors processes| Hub
+    Hub -->|federated sign-in| IdP[Institutional Identity Provider]
+    Hub -->|external mentor identity| ExternalId[External Identity Service]
+    Hub -->|notification delivery| Notify[Notification Provider]
 ```
 
 ## Container view
 
 ```mermaid
 flowchart LR
-    Browser[Web Frontend\nPresents journeys] -->|HTTPS JSON| API[Portal Application\nRules and authorization]
+    Browser[Web Frontend\nPresents role journeys] -->|HTTPS JSON| API[Workplace Learning API\nWorkflow and authorization]
     API -->|OIDC| IdP[Institutional IdP]
-    API -->|parameterised queries over TLS| DB[(Results Database\nAcademic records)]
-    API -->|object access over HTTPS| Store[(Object Storage\nAssignment files)]
-    API -->|scan job| Queue[(Scan Queue)]
-    Queue --> Worker[Scan Worker\nValidates files]
+    API -->|parameterised queries over TLS| DB[(Dossier Database\nPlacements logbooks reviews)]
+    API -->|object access over HTTPS| Store[(Object Storage\nDossier documents)]
+    API -->|scan job| Queue[(Document Queue)]
+    Queue --> Worker[Document Worker\nValidates files]
     API -->|approved messages| Notify[Notification Provider]
 ```
 
@@ -40,7 +42,7 @@ Accepted for the first release.
 
 ### Context and drivers
 
-One small team owns a moderate-scale portal with short peaks. The institution has
+One small team owns a moderate-scale workplace learning platform with short peaks. The institution has
 no shared container platform. The service needs controlled deployment, scaling,
 TLS integration, telemetry, and recovery without a new cluster operations burden.
 
@@ -52,7 +54,7 @@ TLS integration, telemetry, and recovery without a new cluster operations burden
 
 ### Decision
 
-Deploy the portal application and scan worker on a managed application platform.
+Deploy the Workplace Learning API and document worker on a managed application platform.
 Use managed relational data, object storage, and queue services. Keep platform-
 specific configuration isolated from application rules.
 

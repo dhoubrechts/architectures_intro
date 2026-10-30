@@ -7,6 +7,7 @@
 After this module, you can:
 
 - turn an idea into a problem statement, outcomes, scope, and assumptions;
+- use simple wireframes and mock-ups to clarify role-specific journeys;
 - distinguish epics, features, user stories, acceptance criteria, and technical work;
 - include quality attributes, privacy, and cybersecurity in the backlog;
 - explain DTAP environments and safe promotion between them;
@@ -15,7 +16,7 @@ After this module, you can:
 
 ## Why start before the architecture diagram?
 
-An idea such as “build one student portal” is too broad to implement. Teams need
+An idea such as “build one workplace learning platform” is too broad to implement. Teams need
 to understand whose problem they are solving, what successful outcomes look like,
 which risks matter, and what can be delivered safely. Architecture translates
 that understanding into boundaries and decisions. Delivery turns those decisions
@@ -38,18 +39,19 @@ flowchart LR
     Learn --> Discover
 ```
 
-Feedback can change earlier decisions. Discovering that most students upload
-from mobile networks may change the upload design. A security test can reveal
+Feedback can change earlier decisions. Discovering that workplace mentors review
+logbooks mainly from mobile devices may change the interaction and API design. A security test can reveal
 that a user story or authorization rule was incomplete.
 
 ## Step 1 — Frame the problem
 
 Start with a problem statement, not a preferred product:
 
-> Students and lecturers use disconnected tools for results, assignments, and
-> notifications. This creates inconsistent access, duplicated work, and poor
-> incident visibility. We need a coherent service that protects academic data
-> and can be operated by the existing team.
+> Students, academic supervisors, workplace mentors, and internship coordinators
+> use disconnected email, spreadsheets, folders, and forms. This creates
+> inconsistent access, duplicated work, missed deadlines, and weak progress
+> visibility. We need one coherent service that protects internship data and
+> can be operated by the existing team.
 
 Capture:
 
@@ -62,8 +64,8 @@ Capture:
 - the owner who can make scope and risk decisions.
 
 An outcome is not the same as an output. “Deploy a portal” is an output. “Reduce
-the time required to submit and confirm an assignment while preventing
-cross-student access” describes an outcome that can be measured.
+the time required to submit and approve a logbook entry while preventing access
+to unassigned dossiers” describes an outcome that can be measured.
 
 ## Step 2 — Understand stakeholders and journeys
 
@@ -77,21 +79,103 @@ Use a simple journey:
 Trigger -> user goal -> steps -> decisions -> result -> failure or support path
 ```
 
-For assignment upload, include expired deadlines, duplicate clicks, interrupted
-networks, malware rejection, accessibility, and support. Architecture based only
+For document upload and logbook review, include missed deadlines, duplicate
+actions, changed supervisor assignments, interrupted networks, malware
+rejection, accessibility, and support. Architecture based only
 on the ideal journey usually fails at boundaries and exception handling.
 
-## Step 3 — From epic to user story
+## Step 3 — Explore journeys with wireframes and mock-ups
+
+Before implementing a frontend, make the workflow visible. A rough visual is
+cheap to change and helps users find missing information, actions, states, and
+privacy problems.
+
+| Artefact | Purpose | Typical detail |
+| --- | --- | --- |
+| Sketch | Capture an early idea quickly | Hand-drawn boxes, notes, arrows |
+| Wireframe | Show structure, hierarchy, actions, and states | Low-fidelity layout without final colours or branding |
+| Mock-up | Show the intended visual appearance | Typography, spacing, colour, realistic content |
+| Prototype | Let users try part of the interaction | Clickable or coded transitions using test data |
+
+A wireframe is not the architecture and is not proof that the workflow works.
+It is a conversation tool that connects user needs to frontend states, backend
+operations, authorization, and data.
+
+### Start with one role and one question
+
+For the workplace learning case, begin with the student question:
+
+> What must I do next, and what is waiting for review?
+
+A simple text wireframe is enough:
+
+```text
++------------------------------------------------------------------+
+| Workplace Learning Hub                    [Student] [Sign out]    |
++------------------------------------------------------------------+
+| Placement: Example Organisation     Phase: Active     42%        |
+| Academic supervisor: A. Example     Workplace mentor: W. Example |
++------------------------------------------------------------------+
+| Next actions                                                     |
+| [!] Submit week 4 logbook                         Due Friday      |
+| [ ] Upload progress document                      Due 15 Nov      |
++------------------------------------------------------------------+
+| Recent feedback                                                  |
+| Logbook week 3 — Approved by workplace mentor                    |
++------------------------------------------------------------------+
+```
+
+The purpose is not visual polish. Reviewers can ask:
+
+- Can the student understand the current phase and next action?
+- Which data is necessary on the overview?
+- Does the screen reveal feedback or contact data to the wrong role?
+- What happens when there is no placement, an overdue action, or a service error?
+- Which API calls and authorization checks are implied?
+
+### Draw states, not only the happy path
+
+Create variants for:
+
+- loading;
+- no dossier or no assigned students;
+- permission denied;
+- validation error;
+- document scanning or review pending;
+- changes requested;
+- dependency unavailable; and
+- completed or archived dossier.
+
+For a workplace mentor, show only assigned interns and permitted actions. For an
+academic supervisor, show review workload and progress signals without exposing
+unnecessary private workplace or student data. For a coordinator, make high-risk
+actions such as reassignment explicit and confirmable.
+
+### Connect the wireframe to implementation
+
+Annotate each visible element:
+
+| Wireframe element | User story or requirement | API or data need | Security question |
+| --- | --- | --- | --- |
+| Current phase | Student understands progress | `GET /api/me/dossier` | May this identity see this dossier? |
+| Submit logbook | Student records workplace activity | `POST /api/dossiers/{id}/logbook` | Is the student assigned and is the phase open? |
+| Approve entry | Mentor validates hours | `POST /api/logbook/{id}/review` | Is this mentor currently assigned? |
+
+Use fictional content. Do not paste screenshots containing real student names,
+contact details, organisations, progress, feedback, or assessment information.
+Do not copy a commercial product screen; design from the requirements and users.
+
+## Step 4 — From epic to user story
 
 Backlog items exist at different levels:
 
-| Level | Purpose | Example |
-| --- | --- | --- |
-| Epic | Large outcome spanning several increments | Secure assignment submission |
-| Feature | Coherent capability within an epic | Upload and validate a PDF |
-| User story | Small, valuable behaviour from a user's perspective | As a student, I want to see scan status so that I know whether my submission is accepted. |
-| Enabler or technical item | Technical work needed to deliver or reduce risk | Add object-storage lifecycle policy and audit events. |
-| Defect | Observed behaviour that violates an expectation | A student can retrieve another student's file by changing the ID. |
+| Level                     | Purpose                                             | Example                                                                                                     |
+| ------------------------- | --------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
+| Epic                      | Large outcome spanning several increments           | Transparent internship guidance                                                                             |
+| Feature                   | Coherent capability within an epic                  | Submit and review weekly logbook entries                                                                    |
+| User story                | Small, valuable behaviour from a user's perspective | As a workplace mentor, I want to review an assigned student's hours so that progress is confirmed promptly. |
+| Enabler or technical item | Technical work needed to deliver or reduce risk     | Add object-storage lifecycle policy and audit events.                                                       |
+| Defect                    | Observed behaviour that violates an expectation     | A workplace mentor can retrieve an unassigned student's document by changing the ID.                        |
 
 The common user-story form is:
 
@@ -113,7 +197,7 @@ Security work does not always fit a user persona naturally. Do not force an
 awkward story such as “as a hacker.” Use security requirements, abuse cases, or
 technical backlog items when they communicate the work more accurately.
 
-## Step 4 — Acceptance criteria and examples
+## Step 5 — Acceptance criteria and examples
 
 Acceptance criteria define observable conditions for accepting the story. They
 cover the happy path, boundaries, failure, and security-relevant behaviour.
@@ -122,10 +206,10 @@ Example:
 
 ```gherkin
 Given student A is authenticated
-And result 124 belongs to student B
-When student A requests result 124
-Then the portal does not return the result
-And the denial is recorded without sensitive result content
+And dossier 124 belongs to student B
+When student A requests dossier 124
+Then the platform does not return the dossier
+And the denial is recorded without sensitive dossier content
 ```
 
 Add criteria for:
@@ -141,7 +225,7 @@ Add criteria for:
 Acceptance criteria are not only user-interface examples. They can describe API,
 data, operational, and security outcomes.
 
-## Step 5 — Quality attributes and cybersecurity requirements
+## Step 6 — Quality attributes and cybersecurity requirements
 
 User stories describe slices of behaviour. Cross-cutting qualities require
 explicit scenarios and engineering work. For every feature, ask:
@@ -155,7 +239,7 @@ explicit scenarios and engineering work. For every feature, ask:
 
 ### Data and privacy
 
-- Which data is personal, academic, secret, or public?
+- Which data is personal, workplace-related, assessment-related, secret, or public?
 - Where is it collected, stored, copied, logged, backed up, and deleted?
 - Is every collected field necessary?
 - Can production data be excluded from lower environments?
@@ -180,19 +264,19 @@ prompt such as spoofing, tampering, repudiation, information disclosure, denial
 of service, and elevation of privilege. The method supports thinking; it does not
 replace context or verification.
 
-## Step 6 — Prioritise and prepare work
+## Step 7 — Prioritise and prepare work
 
 Prioritisation balances value, risk, dependency, learning, and cost. A first
 increment should often test the riskiest assumptions and complete a thin
 end-to-end path rather than build every layer separately.
 
-Possible ordering for the portal:
+Possible ordering for the workplace learning platform:
 
 1. prove sign-in integration in a non-production environment;
-2. implement one authorized result-read flow with audit evidence;
-3. test peak-read assumptions;
-4. add assignment upload and scanning as a separate increment; and
-5. add administrative correction after its approval and audit rules are agreed.
+2. implement one authorized dossier-read flow with audit evidence;
+3. add logbook submission and assigned-mentor approval;
+4. add document upload, scanning, and supervisor review; and
+5. add coordinator reassignment after its approval and audit rules are agreed.
 
 A **Definition of Ready** is a team agreement for when work is understood enough
 to begin. It may require an owner, acceptance examples, dependencies, data
@@ -204,7 +288,7 @@ is not done until applicable code review, tests, documentation, security checks,
 telemetry, deployment, and acceptance evidence exist. “Works on my machine” is
 not done.
 
-## Step 7 — DTAP environments
+## Step 8 — DTAP environments
 
 DTAP stands for **Development, Test, Acceptance, and Production**. Organisations
 may use different names or combine stages, but each environment needs a clear
@@ -238,7 +322,7 @@ such as identity flow, network rules, database engine, migration path, and
 representative load. It need not duplicate full production scale at all times.
 Document differences that could invalidate a test.
 
-## Step 8 — Secure CI/CD
+## Step 9 — Secure CI/CD
 
 A delivery pipeline creates repeatable evidence and reduces manual drift:
 
@@ -273,7 +357,7 @@ A scanner finding is evidence to triage, not an automatic proof of exploitabilit
 Conversely, a clean scan is not proof of security. Keep threat-informed tests and
 human review.
 
-## Step 9 — Release safely
+## Step 10 — Release safely
 
 Plan both application and database changes. A rollback can fail if a migration
 removed data or old code cannot read the new schema. Prefer compatible, staged
@@ -290,7 +374,7 @@ Each strategy needs success criteria, observability, an abort decision, and a
 tested recovery path. A feature flag adds configuration and cleanup work; it is
 not free safety.
 
-## Step 10 — Operate, learn, and improve
+## Step 11 — Operate, learn, and improve
 
 After release, compare real outcomes with the original problem and assumptions:
 
@@ -322,16 +406,18 @@ diagnostic value.
 ## Practice and self-check
 
 1. Rewrite “build a secure cloud portal” as a problem and two measurable outcomes.
-2. Write one result-viewing user story and five acceptance criteria, including two security cases.
-3. Explain the difference between acceptance criteria and Definition of Done.
-4. Why should production secrets and data not be copied into Development or Test?
-5. Which pipeline checks would you choose for a Markdown-only change, an API change, and an infrastructure change?
-6. Give one case where rollback is unsafe and a forward fix is preferable.
-7. Identify one operational signal that could invalidate a design assumption.
+2. Draw a low-fidelity student-dashboard wireframe and annotate three API needs and three authorization questions.
+3. Write one logbook user story and five acceptance criteria, including two security cases.
+4. Explain the difference between a wireframe, mock-up, prototype, acceptance criteria, and Definition of Done.
+5. Why should production secrets and data not be copied into Development or Test?
+6. Which pipeline checks would you choose for a frontend change, an API change, and an infrastructure change?
+7. Give one case where rollback is unsafe and a forward fix is preferable.
+8. Identify one operational signal that could invalidate a design assumption.
 
 ## Summary
 
 - Start with problems and measurable outcomes, not tools.
+- Use low-fidelity wireframes to expose roles, states, data, and actions before coding.
 - User stories need acceptance examples; quality and security need explicit scenarios and tests.
 - Threat modelling, privacy, and operational design start before implementation.
 - DTAP separates purposes, identities, data, configuration, and change authority.

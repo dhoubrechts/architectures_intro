@@ -2,10 +2,17 @@
 
 ## Purpose
 
-This repository is named `architectures_intro` and contains the English,
-hands-on **Intro to Architectures** course for PXL students. Keep every
+This repository is named `applied_application_architecture` and contains the
+English, hands-on **Applied Application Architecture: From Idea to Cloud**
+course for PXL students. Keep every
 contribution practical, approachable, and suitable for learners who have
 technical foundations but limited architecture experience.
+
+The continuous case is the fictional Northstar Workplace Learning Hub for
+students, academic supervisors, workplace mentors, internship coordinators, and
+external organisations. It may use public workplace-learning products as domain
+inspiration but must never copy a commercial interface, proprietary content, or
+real personal data.
 
 ## Language and tone
 
@@ -21,6 +28,7 @@ technical foundations but limited architecture experience.
 - Give every module a numbered filename and a descriptive title.
 - Start each module with learning objectives and estimated study time.
 - Combine concise theory with examples, diagrams, checkpoints, and a hands-on lab.
+- Introduce role journeys with low-fidelity wireframes before visual mock-ups or implementation.
 - End each module with a summary, review questions, and pointers to the next module.
 - Keep instructor solutions separate from learner instructions under `solutions/`.
 
@@ -43,7 +51,7 @@ production credentials, personal data, or destructive actions against shared
 resources. Use synthetic data and fictional organizations.
 
 The end project grows incrementally: local frontend and backend, persistence,
-local containers, pipeline gates, cloud deployment, external HTTPS access,
+Dockerfiles and Docker Compose, pipeline gates, cloud container deployment, external HTTPS access,
 observability, recovery, and defence. Do not introduce a later layer until the
 earlier working slice is reproducible and tested.
 

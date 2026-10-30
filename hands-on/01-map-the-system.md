@@ -17,17 +17,18 @@ You will practise how to:
 ## Prerequisites
 
 - Complete [Module 1](../course/01-systems-thinking.md).
-- Read the [student portal case](../case-study/student-portal.md).
+- Read the [workplace learning case](../case-study/workplace-learning-platform.md).
 - Create `portfolio/01-system-map.md`.
 
 ## Scenario
 
 The project sponsor says:
 
-> We need one modern, secure portal. It should be fast, always available, cloud
-> native, and easy to maintain. Students must log in with their school account,
-> view only their own results, and upload assignments. We expect about 5,000
-> students, and everybody will probably log in at the same time on result day.
+> We need one modern, secure workplace learning platform. It should be fast,
+> always available, cloud native, and easy to maintain. Students must see their
+> own internship dossier, logbook, documents, feedback, and progress. Academic
+> supervisors and workplace mentors must see and update only assigned dossiers.
+> We expect about 5,000 students, and reviews will probably peak near deadlines.
 
 Treat this as input to analyse, not a complete specification.
 
@@ -53,9 +54,9 @@ split it.
 
 Write one scenario for each quality:
 
-1. performance during result publication;
-2. authorization of result access;
-3. recovery of assignment uploads; and
+1. performance during an evaluation deadline;
+2. authorization based on role and current dossier assignment;
+3. recovery of logbooks, reviews, and document uploads; and
 4. maintainability of a routine deployment.
 
 Use this template:
@@ -88,19 +89,20 @@ Keep components logical. Do not choose a vendor service yet.
 
 Create a Mermaid context diagram with:
 
-- the portal as one system;
-- students, lecturers, and administrators;
+- the Workplace Learning Hub as one system;
+- students, academic supervisors, workplace mentors, and internship coordinators;
 - the institutional identity provider;
+- an external identity flow for workplace mentors;
 - a notification provider; and
-- institutional reporting.
+- the student information system.
 
 Label every relationship with a purpose. Add a short paragraph defining what is
-inside and outside the portal team's scope.
+inside and outside the platform team's scope.
 
 ```mermaid
 flowchart LR
-    Actor[Actor] -->|purpose| Portal[Student Portal]
-    Portal -->|purpose| External[External System]
+    Actor[Actor] -->|purpose| Hub[Workplace Learning Hub]
+    Hub -->|purpose| External[External System]
 ```
 
 ### Checkpoint 2

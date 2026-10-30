@@ -28,11 +28,11 @@ deployable unit without losing the conceptual separation.
 
 ```mermaid
 flowchart LR
-    Browser[Browser frontend] -->|HTTPS and JSON| API[Portal backend API]
-    API -->|authorised queries| DB[(Relational database)]
+    Browser[Browser frontend] -->|HTTPS and JSON| API[Workplace Learning API]
+    API -->|authorised dossier queries| DB[(Relational database)]
     API -->|short-lived upload permission| Store[(Object storage)]
     API -->|work message| Queue[(Message queue)]
-    Queue --> Worker[Scan worker]
+    Queue --> Worker[Document scan worker]
     Worker --> Store
     Worker --> DB
 ```
@@ -49,10 +49,10 @@ An API contract defines more than a URL. It includes:
 - timeouts and size limits; and
 - retry or idempotency behaviour.
 
-For example, `GET /api/results/123` is unsafe if `123` alone decides which
-student record to return. The backend must connect the authenticated subject to
-the permitted resource. Hiding or disabling a frontend control is only user
-experience; it is not server-side authorization.
+For example, `GET /api/dossiers/123` is unsafe if `123` alone decides which
+internship dossier to return. The backend must connect the authenticated subject,
+current role, dossier assignment, requested action, and resource state. Hiding
+or disabling a frontend control is only user experience; it is not server-side authorization.
 
 ### Useful HTTP distinctions
 
@@ -72,11 +72,11 @@ clients to guess from inconsistent errors.
 | Store | Good fit | Main design concerns |
 | --- | --- | --- |
 | Relational database | Structured records, relationships, constraints, transactions | Schema evolution, query design, connections, backup and recovery |
-| Object storage | Large binary objects such as assignment files | Access policy, metadata, retention, malware scanning, lifecycle |
+| Object storage | Large binary objects such as agreements, plans, and evidence documents | Access policy, metadata, retention, malware scanning, lifecycle |
 | Cache | Repeated reads where temporary copies are acceptable | Staleness, invalidation, key design, sensitive data |
 | Message queue | Decoupled work and burst absorption | Duplicate delivery, ordering, retries, poison messages, monitoring |
 
-A cache is not automatically the source of truth. If a result changes, the
+A cache is not automatically the source of truth. If a dossier phase or review changes, the
 system needs a policy for updating or expiring cached copies. A queue is not a
 magic reliability layer: messages can be delayed, delivered more than once, or
 fail repeatedly.
@@ -87,16 +87,18 @@ In synchronous work, the caller waits for completion. This is appropriate when
 the result is quick and needed immediately. Long or bursty work can be moved to
 an asynchronous process.
 
-### Assignment upload example
+### Internship document upload example
 
-1. The student requests permission to upload.
-2. The backend authenticates the student, checks the assignment window, creates
-   an upload record, and returns a short-lived permission.
+1. The student requests permission to upload a document for a required dossier activity.
+2. The backend authenticates the student, checks the current dossier assignment,
+   phase, activity, deadline, and permitted document type, then creates an upload
+   record and returns a short-lived permission.
 3. The browser uploads the file to object storage.
 4. The system emits a scan request.
 5. A worker retrieves and scans the file.
 6. The worker records `accepted` or `rejected` status.
-7. The frontend polls or receives an event and shows the final state.
+7. The frontend polls or receives an event and shows the scan state; only an
+   accepted document becomes available to the assigned reviewer.
 
 The upload request returns before scanning finishes. The user needs an explicit
 state such as `uploaded`, `scanning`, `accepted`, or `rejected`; “success” must
@@ -106,7 +108,7 @@ not incorrectly imply that every background step completed.
 
 A timeout does not prove that an operation failed. The server may have completed
 the action while the response was lost. Retrying a non-idempotent operation can
-create duplicate submissions or notifications.
+create duplicate logbook entries, document versions, reviews, or notifications.
 
 Use techniques such as:
 
@@ -123,7 +125,7 @@ assume from one messaging product.
 ## Data ownership and consistency
 
 Declare which component owns a record and which copies are derived. If both the
-portal and an institutional system can independently edit the same result,
+platform and an institutional system can independently edit the same placement or phase,
 conflicts and unclear accountability follow.
 
 Ask:
@@ -137,12 +139,12 @@ Ask:
 
 ## Practice and self-check
 
-1. Describe the data flow for viewing exam results.
-2. Choose a store for result records, PDF submissions, repeated public course
-   metadata, and scan jobs. Explain each choice.
+1. Describe the data flow for an assigned workplace mentor reviewing a logbook entry.
+2. Choose a store for dossier records, uploaded evidence documents, repeated
+   programme instructions, and scan jobs. Explain each choice.
 3. Explain why client-side validation is useful but insufficient.
-4. Name three new failure modes introduced by asynchronous malware scanning.
-5. Design an idempotency approach for a “submit final assignment” action.
+4. Name three new failure modes introduced by asynchronous document scanning.
+5. Design an idempotency approach for a “submit logbook week” action.
 
 ## Summary
 

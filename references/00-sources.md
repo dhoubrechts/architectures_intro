@@ -4,6 +4,14 @@ Use primary documentation to verify protocol behaviour, security requirements,
 and architecture notation. Vendor guidance can illustrate an implementation,
 but a vendor product page does not prove that a design fits this case.
 
+## Workplace learning domain inspiration
+
+- [OnStage public product overview](https://www.onstagesoftware.com/en) — domain
+  reference for integrated internship matching, guidance, documents,
+  assessments, evaluations, hours, and external-organisation collaboration.
+  The course uses an independent fictional case and does not reproduce the
+  commercial product or its interface.
+
 ## Architecture communication and decisions
 
 - [C4 model](https://c4model.com/) — hierarchical software architecture views.

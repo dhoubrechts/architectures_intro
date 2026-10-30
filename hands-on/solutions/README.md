@@ -9,13 +9,13 @@ architecture.
 | Foundation | [Idea to implementation](00-from-idea-to-implementation-solution.md) |
 | 1 | [Map the system](01-map-the-system-solution.md) |
 | 2 | [Trace a web request](02-trace-a-web-request-solution.md) |
-| 3 | [Model an application flow](03-model-an-application-flow-solution.md) |
+| 3 | [Model a logbook and document workflow](03-model-an-application-flow-solution.md) |
 | 4 | [Compare deployment options](04-compare-deployment-options-solution.md) |
-| 5 | [Threat-model the portal](05-threat-model-the-portal-solution.md) |
+| 5 | [Threat-model the platform](05-threat-model-the-platform-solution.md) |
 | 6 | [Diagnose an incident](06-diagnose-an-incident-solution.md) |
 | 7 | [Create views and an ADR](07-create-views-and-an-adr-solution.md) |
 
-Lab 8 and the end project do not have one complete model answer. They are
+Labs 8 and 9 and the end project do not have one complete model answer. They are
 assessed with the [end project rubric](../../project/rubric.md), because a full
 reference implementation would undermine independent design and defence.
 

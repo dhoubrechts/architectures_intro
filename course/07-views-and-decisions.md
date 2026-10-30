@@ -34,14 +34,16 @@ misunderstand the term.
 
 ## Context view
 
-Keep the portal as one system and show people and external systems:
+Keep the Workplace Learning Hub as one system and show people and external systems:
 
 ```mermaid
 flowchart LR
-    Student[Student] -->|views results and uploads work| Portal[Student Portal]
-    Lecturer[Lecturer] -->|publishes results| Portal
-    Portal -->|authenticates users| IdP[Institutional Identity Provider]
-    Portal -->|sends notifications| Notify[Notification Provider]
+    Student[Student] -->|maintains dossier and logbook| Hub[Workplace Learning Hub]
+    Academic[Academic Supervisor] -->|guides and assesses assigned students| Hub
+    Mentor[Workplace Mentor] -->|approves hours and gives feedback| Hub
+    Coordinator[Internship Coordinator] -->|configures and monitors processes| Hub
+    Hub -->|authenticates institutional users| IdP[Institutional Identity Provider]
+    Hub -->|notifies participants| Notify[Notification Provider]
 ```
 
 Do not add internal databases or pods to a context diagram. That detail answers a
@@ -54,11 +56,11 @@ design:
 
 ```mermaid
 flowchart LR
-    Browser[Web application\nBrowser] -->|HTTPS/JSON| API[Portal application\nBusiness rules and authorization]
-    API -->|SQL/TLS| DB[(Results database\nAcademic records)]
-    API -->|HTTPS| Store[(Object storage\nAssignment files)]
-    API -->|work messages| Queue[(Scan queue)]
-    Queue --> Worker[Scan worker\nMalware validation]
+    Browser[Web application\nBrowser] -->|HTTPS/JSON| API[Workplace Learning API\nWorkflow and authorization]
+    API -->|SQL/TLS| DB[(Dossier database\nPlacements logbooks reviews)]
+    API -->|HTTPS| Store[(Object storage\nDossier documents)]
+    API -->|work messages| Queue[(Document queue)]
+    Queue --> Worker[Document worker\nMalware validation]
     API -->|OIDC| IdP[Institutional IdP]
 ```
 
@@ -71,7 +73,7 @@ specific description is possible.
 A deployment view maps instances to infrastructure for one environment. It can
 show zones or failure domains, network boundaries, scaling, and managed services.
 
-Do not mix conceptual and instance counts silently. “Portal application” in a
+Do not mix conceptual and instance counts silently. “Workplace Learning API” in a
 container view may map to three production instances and one acceptance instance.
 Name the environment and multiplicity.
 
@@ -82,19 +84,19 @@ and important alternate paths:
 
 ```mermaid
 sequenceDiagram
-    actor S as Student
-    participant P as Portal
+    actor M as Workplace Mentor
+    participant P as Workplace Learning API
     participant I as Identity Provider
-    participant D as Results Database
-    S->>P: Request results
+    participant D as Dossier Database
+    M->>P: Review submitted logbook entry
     alt no valid session
         P->>I: Start sign-in
         I-->>P: Validated identity response
     end
-    P->>P: Authorize subject for requested results
-    P->>D: Query permitted results
-    D-->>P: Result rows
-    P-->>S: Render results
+    P->>P: Authorize mentor assignment action and state
+    P->>D: Read assigned entry and record review
+    D-->>P: Updated workflow state
+    P-->>M: Show approved or changes-requested state
 ```
 
 If authorization fails, the database query should not return the protected

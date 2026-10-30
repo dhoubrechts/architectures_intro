@@ -19,7 +19,7 @@
 14. How do metrics, logs, and traces answer different diagnostic questions?
 15. What does a context diagram show that a deployment diagram does not?
 16. What makes an Architecture Decision Record useful months later?
-17. Which evidence would support a claim that the system handles a result-day peak?
+17. Which evidence would support a claim that the system handles a logbook or evaluation-deadline peak?
 18. Name five warning signs in an AI-generated architecture proposal.
 
 ## Short model-answer direction
@@ -41,7 +41,7 @@ that identity may perform a specific action on a specific resource.
 | --- | ---: | --- |
 | Requirements and scope | 15% | Assumptions, functional requirements, quality scenarios, and constraints are explicit. |
 | Architecture correctness | 20% | Components have clear responsibilities; relationships, protocols, and data are coherent. |
-| End-to-end reasoning | 15% | Login, result viewing, and upload flows can be followed across boundaries. |
+| End-to-end reasoning | 15% | Dossier viewing, logbook approval, and document-review flows can be followed across boundaries. |
 | Security and privacy | 15% | Trust boundaries, object-level authorization, secrets, logging, and abuse cases are addressed. |
 | Reliability and operations | 15% | Failure modes, recovery, scaling, deployment, and telemetry are testable. |
 | Decisions and trade-offs | 10% | Major choices have alternatives, consequences, and decision drivers. |
@@ -52,7 +52,8 @@ that identity may perform a specific action on a specific resource.
 - one system context diagram;
 - one container diagram;
 - one deployment diagram;
-- two sequence diagrams: login and assignment upload;
+- simple wireframes for student, academic-supervisor, and workplace-mentor journeys;
+- two sequence diagrams: logbook approval and document upload/review;
 - a quality-attribute scenario table;
 - a security-control and trust-boundary table;
 - an observability and recovery plan;

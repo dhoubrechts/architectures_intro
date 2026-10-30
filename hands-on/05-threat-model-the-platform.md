@@ -1,9 +1,9 @@
-# Lab 5 — Threat-model the portal
+# Lab 5 — Threat-model the workplace learning platform
 
 ## Goal
 
 Identify trust boundaries, abuse cases, security controls, and verification
-evidence for result viewing and assignment upload.
+evidence for dossier access, logbook approval, document upload, and review.
 
 ## Learning objectives
 
@@ -22,24 +22,26 @@ You will practise how to:
 
 ## Part 1 — Identify assets and actors
 
-List at least eight assets, such as result records, assignment files, identity
-tokens, audit history, service credentials, and availability. For each asset,
+List at least ten assets, such as dossier records, placement and contact data,
+logbook hours, feedback, assessments, uploaded documents, identity tokens,
+audit history, service credentials, and availability. For each asset,
 state the required confidentiality, integrity, and availability.
 
-List human and technical actors. Include student, lecturer, administrator,
-support analyst, portal service, scan worker, identity provider, and notification service.
+List human and technical actors. Include student, academic supervisor, workplace
+mentor, internship coordinator, support analyst, platform service, document
+worker, identity provider, and notification service.
 
 ## Part 2 — Draw data flows and boundaries
 
-Draw one data-flow view covering browser, public edge, portal API, identity
-provider, database, object storage, queue, and scan worker.
+Draw one data-flow view covering browser, public edge, Workplace Learning API, identity
+provider, external identity flow, database, object storage, queue, and document worker.
 
 Mark boundaries for:
 
 - internet to public edge;
 - edge to application environment;
 - application to data services;
-- portal ownership to external identity or notification ownership; and
+- platform ownership to external identity or notification ownership; and
 - human administrative access.
 
 Label data and identity on every arrow.
@@ -48,22 +50,23 @@ Label data and identity on every arrow.
 
 Write at least ten abuse cases. Include:
 
-- changing a result identifier;
+- changing a dossier or document identifier;
+- using a workplace-mentor role to access an unassigned student;
 - replaying or reusing an upload permission;
 - uploading unexpected content;
 - forging identity or role claims;
 - stealing a service credential;
-- flooding login, result, or upload endpoints;
-- changing a result without a defensible audit record;
+- flooding login, assigned-student dashboard, logbook, or upload endpoints;
+- changing hours, feedback, assessment, or supervisor assignment without a defensible audit record;
 - exposing tokens or personal data in logs;
-- a compromised scan worker; and
-- an administrator using excessive privilege.
+- a compromised document worker; and
+- a coordinator using excessive privilege.
 
 ## Part 4 — Map controls and evidence
 
 | Abuse case | Prevent or limit | Detect | Recover | Verification evidence | Owner |
 | --- | --- | --- | --- | --- | --- |
-| Change result ID | Server-side subject-resource authorization | Denial metric and audit event | Investigate affected session | Automated cross-account test | Portal team |
+| Change dossier ID | Server-side role, assignment, object, and state authorization | Denial metric and audit event | Investigate affected session and route | Automated cross-dossier test | Platform team |
 | Your case | | | | | |
 
 Avoid generic controls such as “use encryption” without specifying where,
@@ -80,23 +83,24 @@ Then <protected outcome>
 And <safe evidence>
 ```
 
-Include tests for cross-student result and file access, expired upload permission,
-oversized upload, invalid role claim, missing token, repeated final submission,
-log redaction, and worker access outside its object scope.
+Include tests for cross-student dossier and document access, unassigned mentor
+access, expired upload permission, oversized upload, invalid role claim, missing
+token, repeated logbook approval, invalid phase transition, log redaction, and
+worker access outside its object scope.
 
 ## Part 6 — Least-privilege matrix
 
 | Identity | Required actions | Explicitly forbidden | Credential type and lifetime | Review owner |
 | --- | --- | --- | --- | --- |
-| Portal runtime | | | | |
-| Scan worker | | | | |
+| Workplace Learning runtime | | | | |
+| Document worker | | | | |
 | Migration job | | | | |
 | Service desk | | | | |
 | Administrator | | | | |
 
 ## Completion checkpoint
 
-- Every sensitive object has a server-side authorization rule.
+- Every sensitive object and workflow transition has a server-side authorization rule.
 - Network location is not the only reason to trust a caller.
 - Logs provide evidence without storing credentials or protected content.
 - Service identities have different scopes when their responsibilities differ.
@@ -112,4 +116,4 @@ log redaction, and worker access outside its object scope.
 - least-privilege matrix.
 
 After completing the lab, compare with the
-[reference solution](solutions/05-threat-model-the-portal-solution.md).
+[reference solution](solutions/05-threat-model-the-platform-solution.md).

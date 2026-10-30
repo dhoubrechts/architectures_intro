@@ -4,10 +4,10 @@
 
 | Criterion | Weight | Reason |
 | --- | ---: | --- |
-| Operational simplicity | 25 | The portal has a small operating team. |
+| Operational simplicity | 25 | The Workplace Learning Hub has a small operating team. |
 | Security and patch responsibility | 15 | Unpatched platform layers create material risk. |
-| Peak scaling | 15 | Publication and deadline traffic is bursty. |
-| Recovery capability | 15 | Academic records and assignments require tested recovery. |
+| Peak scaling | 15 | Logbook, document, and evaluation deadline traffic is bursty. |
+| Recovery capability | 15 | Dossiers, logbooks, reviews, and documents require tested recovery. |
 | Delivery speed | 10 | The team needs safe, frequent change. |
 | Total cost | 15 | People and managed-service costs must fit the budget. |
 | Portability and exit | 5 | Provider coupling matters but is not the main first-release driver. |
@@ -34,7 +34,7 @@ that assumption must be recorded and revisited.
 ## Responsibility example
 
 With a managed platform, the provider operates physical infrastructure and much
-of the runtime. The portal team still owns application dependencies,
+of the runtime. The application team still owns application dependencies,
 configuration, identity, authorization, data classification, schema, queries,
 backup policy, restore testing, telemetry, incidents, and cost review.
 
@@ -49,7 +49,7 @@ features.
 
 Orchestrated containers are the strongest rejected alternative because they
 offer flexible scheduling and scaling. They lose for the first release because
-the institution has no existing shared platform and the portal does not yet
+the institution has no existing shared platform and the application does not yet
 justify the new control-plane and on-call burden.
 
 Validate platform limits with a vertical slice, peak test, recovery exercise,

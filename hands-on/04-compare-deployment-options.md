@@ -2,7 +2,7 @@
 
 ## Goal
 
-Compare three deployment options for the portal without selecting a platform by
+Compare three deployment options for the Workplace Learning Hub without selecting a platform by
 fashion or familiarity alone. Produce a decision matrix and a provisional recommendation.
 
 ## Learning objectives
@@ -74,7 +74,7 @@ For each option, identify who handles:
 - monitoring and incident response; and
 - capacity and cost review.
 
-Use `provider`, `platform team`, or `portal team`, but add a note where responsibility is shared.
+Use `provider`, `platform team`, or `application team`, but add a note where responsibility is shared.
 
 ## Part 4 — Environment and delivery diagram
 
@@ -100,7 +100,7 @@ or if the institution establishes a supported shared container platform.”
 ## Completion checkpoint
 
 - Your highest score follows from weights and evidence, not a preferred product.
-- The managed option still assigns security, data, recovery, and monitoring work to the portal team.
+- The managed option still assigns security, data, recovery, and monitoring work to the application team.
 - People and telemetry appear in the cost analysis.
 - The recommendation contains negative consequences and a review trigger.
 

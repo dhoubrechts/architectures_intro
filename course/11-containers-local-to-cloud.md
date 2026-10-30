@@ -1,4 +1,4 @@
-# Containers — From local test to an externally accessible cloud service
+# Docker — From local test to an externally accessible cloud service
 
 **Estimated study time:** 90 minutes plus deployment practice
 
@@ -6,8 +6,8 @@
 
 After this module, you can:
 
-- package frontend and backend as separate container images;
-- run a repeatable local Test environment with container networking and volumes;
+- package frontend and backend as separate Docker images using Dockerfiles;
+- run a repeatable local Test environment with Docker Compose networking and volumes;
 - explain which configuration belongs in an image and which belongs in an environment;
 - promote immutable images through a registry to a cloud runtime;
 - design safe external access with DNS, HTTPS, identity, network controls, and telemetry; and
@@ -16,12 +16,13 @@ After this module, you can:
 ## Prerequisites
 
 Complete the [implementation journey](10-implementation-journey.md) through the
-first read and write slices. The application must work outside containers before
-you package it; containers should not hide an unknown application failure.
+first read and write slices. Docker Desktop or Docker Engine with the Compose
+plugin must be available. The application must work outside containers before
+you package it; Docker should not hide an unknown application failure.
 
-## Why containerise after the first vertical slice?
+## Why use Docker after the first vertical slice?
 
-A container image packages an application with its runtime and dependencies.
+A Docker image packages an application with its runtime and dependencies.
 This improves repeatability, but adds build, networking, storage, security, and
 debugging concepts. Beginners first prove the frontend-backend request locally,
 then package each part while preserving the same behaviour.
@@ -36,7 +37,7 @@ flowchart LR
     Backend -->|private container network| DB[(Test datastore container)]
 ```
 
-## Image responsibilities
+## Dockerfile and image responsibilities
 
 ### Frontend image
 
@@ -60,9 +61,9 @@ Use synthetic seed data. In cloud, a managed datastore is often preferable for a
 small team because backup, patching, and high availability are specialised work;
 the application contract should permit this change without changing business logic.
 
-## Local compose environment
+## Local Docker Compose environment
 
-A compose definition or equivalent should declare:
+A versioned `compose.yaml` should declare:
 
 - frontend, backend, and datastore services;
 - a private application network;
@@ -72,24 +73,25 @@ A compose definition or equivalent should declare:
 - environment configuration and secret references; and
 - resource limits where supported.
 
-Do not place real secret values in the compose file. A local `.env` file can be
+Do not place real secret values in the Compose file. A local `.env` file can be
 excluded from version control, but exclusion alone is not secret management.
 Provide `.env.example` with names and safe placeholders.
 
 ### Local verification sequence
 
-1. Build images without using a developer's uncommitted dependencies.
-2. Start the stack with one documented command.
+1. Build images with `docker compose build` without using a developer's uncommitted dependencies.
+2. Start the stack with `docker compose up -d` or the documented foreground equivalent.
 3. Run migrations and synthetic seed safely.
 4. Wait for readiness rather than a fixed sleep.
 5. Run smoke, integration, and negative authorization tests.
 6. Restart the backend and prove intentional data persists.
-7. Stop and remove the stack; document how to remove the local test volume.
+7. Stop the stack with `docker compose down`; remove the local test volume only
+   through the documented, intentionally destructive cleanup command.
 
 Cleanup is explicit because test data, images, networks, and volumes otherwise
 accumulate and hide reproducibility problems.
 
-## Container security checks
+## Docker security checks
 
 Check:
 
@@ -126,7 +128,7 @@ flowchart LR
     CloudAccept --> Verify[External HTTPS verification]
 ```
 
-## Map local containers to cloud services
+## Map local Docker services to cloud services
 
 The cloud runtime might be a managed container application service, a container
 orchestrator, or another approved platform. Preserve logical responsibilities:
@@ -137,7 +139,7 @@ orchestrator, or another approved platform. Preserve logical responsibilities:
 | Backend container | Private or ingress-controlled API workload |
 | Datastore container | Private managed datastore or approved stateful service |
 | Local named volume | Managed durable storage or database backup policy |
-| Compose network | Cloud network, service discovery, and ingress rules |
+| Docker Compose network | Cloud network, service discovery, and ingress rules |
 | Local environment values | Environment configuration and secret references |
 
 Portability is not perfect. Health probes, identity, storage, networking, and
@@ -184,7 +186,7 @@ Before external access, define:
 - automatic expiration or manual cleanup date for course resources.
 
 External access does not mean anonymous access. A login page can be public while
-portal data remains protected by identity and object-level authorization.
+workplace-learning data remains protected by identity, assignment, object, and state authorization.
 
 ## Cloud pipeline gates
 
@@ -220,7 +222,7 @@ course resource identifiers and have the owner approve the plan.
 2. Why should one approved image be promoted instead of rebuilt for cloud?
 3. Which settings differ between local Test and cloud Acceptance?
 4. Why can the local datastore be a container while the cloud datastore is managed?
-5. List five controls required before an external reviewer accesses the portal.
+5. List five controls required before an external reviewer accesses the Workplace Learning Hub.
 6. How do image digest, deployment record, and application version endpoint support traceability?
 7. Which resources must be cleaned up after the course exercise?
 
@@ -233,4 +235,5 @@ course resource identifiers and have the owner approve the plan.
 - External access requires HTTPS, identity, restricted ingress, private data services, telemetry, and cost control.
 - Cleanup and recovery are part of the architecture, not afterthoughts.
 
-Continue with the [cloud deployment requirements](../project/cloud-deployment-requirements.md).
+Continue with [Lab 8 — Docker local to cloud](../hands-on/08-docker-local-to-cloud.md)
+and the [cloud deployment requirements](../project/cloud-deployment-requirements.md).

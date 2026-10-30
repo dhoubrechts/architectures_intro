@@ -27,7 +27,7 @@ operable architecture.
    suggestions.
 
 Complete the modules in order. Every lab adds an artefact to the same student
-portal design, so later work depends on decisions and vocabulary introduced
+Workplace Learning Hub design, so later work depends on decisions and vocabulary introduced
 earlier.
 
 ## Progressive levels
@@ -37,7 +37,7 @@ earlier.
 | Beginner | Foundation, 1, and 2 | Explain a problem, story, system boundary, and web request without product jargon. |
 | Developing | 3, 4, and 5 | Model an application flow, compare deployment options, and design security controls. |
 | Applied | 6 and 7 | Diagnose failure and communicate architecture with consistent views and ADRs. |
-| Integrated | 8, implementation journey, and container deployment | Build locally in containers, deliver to cloud, observe, and defend a working vertical slice. |
+| Integrated | Implementation journey, Docker deployment, and final capstone | Build locally with Docker Compose, deliver the same images to cloud, observe, and defend a working vertical slice. |
 
 Each level reuses earlier artefacts. Instructors should require a small working
 result before adding another layer. A learner first connects one frontend action
@@ -93,12 +93,14 @@ or extend the sequence by changing the depth of the lab deliverables.
 Keep these artefacts in a personal portfolio folder:
 
 - requirement and quality-attribute tables;
+- role-based wireframes and selected visual mock-ups;
 - context, container, deployment, and sequence diagrams;
 - request-trace observations;
 - a data-placement decision table;
 - a threat model and security-control table;
 - an incident hypothesis log;
-- at least one Architecture Decision Record; and
+- at least one Architecture Decision Record;
+- Dockerfiles, Docker Compose configuration, image digests, and cloud deployment evidence; and
 - the capstone design and oral defence notes.
 
 Version the artefacts. Architecture evolves as assumptions are tested; replacing
